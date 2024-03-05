@@ -1,0 +1,159 @@
+$boxShadow: 0 1px 2px 0 rgba(0,0,0,.06), 0 6px 12px 0 rgba(0,0,0,.08);
+$asideWidth: 250px;
+
+.artboard {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #f1f3f4;
+  overflow: hidden;
+
+  .canvas-container {
+    background-color: #fff;
+    transition: all .6s ease-in-out;
+  }
+
+  .leftPanel {
+    width: $asideWidth;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: $boxShadow;
+    position: fixed;
+    top: 10px;
+    left: 0;
+    z-index: 10;
+    height: calc(100% - 20px);
+
+    &.fold {
+      width: 20px;
+      height: 20px;
+      padding: 0;
+    }
+  }
+
+  .rightPanel {
+    width: $asideWidth;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: $boxShadow;
+    position: fixed;
+    top: 10px;
+    right: 0;
+    bottom: 10px;
+    z-index: 10;
+
+    > .swiper {
+      height: 100%;
+      > .swiper-wrapper {
+        height: 100%;
+      }
+    }
+  }
+
+  .toggle {
+    .icon {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      fill: #999;
+    }
+    .icon-add, .icon-close, .icon-info {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 100;
+    }
+  }
+
+  .toggle-left,
+  .toggle-right {
+    width: auto;
+    height: auto;
+    bottom: auto;
+    background: none;
+    box-shadow: none;
+    &.toggle {
+      svg {
+        fill: #ccc;
+      }
+    }
+  }
+  .toggle-left {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    z-index: 100;
+  }
+  .toggle-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+  }
+
+  .control {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
+}
+
+
+
+.material-img-item {
+  width: 30px;
+  height: 30px;
+}
+
+.colors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  .colorItem {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+.fonts {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  .fontItem {
+    padding: 5px 10px;
+  }
+}
+
+.borders {
+  gap: 10px;
+  .borderItem {
+    cursor: pointer;
+    background-color: rgba(240, 240, 240, 0.5);
+    font-size: 30px;
+    color: pink;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+}
+
+.centerControl {
+  .chakra-menu__menu-list {
+    min-width: 60px;
+    transform: translateX(-17px) !important;
+  }
+}

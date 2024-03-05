@@ -1,0 +1,12 @@
+body {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 隐藏滚动条 */
+.rc-scrollbars-thumb {
+  display: none !important;
+}

@@ -1,0 +1,118 @@
+.homePage {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .github {
+      background-color: #181717;
+      width: 200px;
+      height: 200px;
+      left: -115px;
+      top: -115px;
+      transform: rotate(45deg);
+      position: absolute;
+      z-index: 100;
+    }
+
+    .githubIcon {
+      width: 37px;
+      height: 37px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 101;
+      transition: all .3s ease-in-out;
+      width: 40px;
+      height: 40px;
+
+      &:hover {
+        width: 50px;
+        height: 50px;
+        left: 5px;
+        top: 5px;
+      }
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        margin-top: 100px;
+        font-family: Lucida Handwriting,Charm,HanziPen SC, Nanum Pen Script,Baoli SC, SignPainter, Phosphate, Krungthep, Chalkduster, Baloo Bhaijaan;
+
+        .logoImage {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+    }
+
+    .desc {
+        font-size: 20px;
+        color: #888;
+        margin-top: 30px;
+        max-width: 500px;
+        text-align: center;
+        font-style: italic;
+        font-family: OperatorMonoSSmLig Nerd Font,Cascadia Code PL,FantasqueSansMono Nerd Font,operator mono,JetBrainsMono,Fira code Retina,Fira code,Consolas,Monaco,Hannotate SC,monospace,-apple-system;
+    }
+
+    .upload {
+        width: 300px;
+        position: relative;
+    }
+
+    .btnArea {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .icons {
+      gap: 20px;
+    }
+
+    .btnImage {
+        width: 100px;
+    }
+
+    .btnText {
+        font-size: 20px;
+        margin-top: 30px;
+        background: radial-gradient(100% 5814.06% at 0% 50%,#00EA88 0%,#7444E3 62.5%,#1af70a 100%);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        font-weight: 600;
+        font-family: DroidSansMono,Weibei TC,Krungthep,Comic Sans MS,Ayuthaya,Baloo Bhaijaan,BM Dohyeon,Arial Black;
+    }
+
+    .footer {
+        text-align: center;
+        margin-bottom: 40px;
+        margin-top: 10rem;
+
+        input {
+            display: none;
+        }
+
+        a {
+            color: #000;
+            font-size: 18px;
+            line-height: 32px;
+            padding-bottom: 10px;
+        }
+    }
+}
