@@ -77,7 +77,7 @@ export default function CropperPic() {
           800 x 520
         </button>
         <button className="button-17" onClick={onExport}>
-          下载
+          Download
         </button>
         <button className="button-17" onClick={onSave}>
           Save

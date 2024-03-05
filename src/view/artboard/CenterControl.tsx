@@ -11,22 +11,23 @@ import { getDPR } from '../../common/client';
 
 // const iconColor = 'rgb(142, 68, 173)';
 const iconColor = '#eee';
+const exportImageConfig = {
+  format: 'png',
+  multiplier: getDPR(),
+};
 
 export default function CenterControl() {
   const { update, scale } = useArtboardStore();
   const { addOneImage, updateStep } = usePhotoStore();
 
   const onExport = () => {
-    const str = api.canvas.toDataURL({
-      format: 'png',
-      multiplier: getDPR(),
-    });
+    const str = api.canvas.toDataURL(exportImageConfig);
     const filename = `${getRandString()}.png`;
     const file = dataURLtoFile(str, filename);
     downloadFile(file, filename);
   };
   const onSave = () => {
-    const str = api.canvas.toDataURL();
+    const str = api.canvas.toDataURL(exportImageConfig);
     addOneImage(str);
     updateStep(2);
   };
