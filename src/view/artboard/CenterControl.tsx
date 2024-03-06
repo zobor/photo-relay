@@ -9,7 +9,6 @@ import api from './apiServices';
 import usePhotoStore from '@/store/photo';
 import { getDPR } from '../../common/client';
 
-// const iconColor = 'rgb(142, 68, 173)';
 const iconColor = '#eee';
 const exportImageConfig = {
   format: 'png',
@@ -31,13 +30,10 @@ export default function CenterControl() {
     addOneImage(str);
     updateStep(2);
   };
-  const zoomIn = () => {
-    update({ scale: scale + 1 });
-  };
-  const zoomOut = () => {
-    update({ scale: scale + 1 });
-  };
+  const zoomIn = () => update({ scale: scale + 1 });
+  const zoomOut = () => update({ scale: scale - 1 });
   const updateScale = (scale: number) => update({ scale });
+
   useEffect(() => {
     const el: any = document.querySelector('#artboard');
     if (el) {
@@ -56,7 +52,6 @@ export default function CenterControl() {
       height={30}
       bg={'rgb(39, 174, 96)'}
       borderRadius={6}
-      // border={'solid 1px #f1f3f4'}
       gap={3}
       px={3}
       py={4}
