@@ -130,14 +130,44 @@
 <div id="root"></div>
 <script src="./src/main.tsx" type="module"></script>
 <script async defer data-website-id="59ddf0a8-16ed-4fcb-a878-b5c439b37d17" src="https://www.duelpeak.com/bp/umami.js"></script>
-<script src="https://www.googletagmanager.com/gtag/js?id=G-SJ6TB80GWQ"></script>
 <script>
 (() => {
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
+function loadScriptSync(url, props) {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    if (script.readyState) {
+      script.onreadystatechange = function () {
+        if (script.readyState == 'loaded' || this.readyState == 'complete') {
+          resolve();
+        }
+      };
+    } else {
+      script.onload = () => {
+        resolve();
+      };
+    }
+    script.src = url;
+    Object.keys(props || {}).forEach((key) => {
+      script.setAttribute(key, props[key]);
+    });
+    document.head.appendChild(script);
+  });
+}
 
-gtag('config', 'G-SJ6TB80GWQ');
+function ga() {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SJ6TB80GWQ');
+}
+
+window.addEventListener('load', async () => {
+  loadScriptSync('https://www.googletagmanager.com/gtag/js?id=G-SJ6TB80GWQ').then(() => {
+    ga();
+  });
+});
+
 })();
 </script>
 </body>

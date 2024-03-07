@@ -394,8 +394,8 @@ function Control(): any {
           </Flex>
         )}
         {isGroup ? undefined : (
-          <Flex flexWrap="wrap" gap={2}>
-            {colors.slice(0, 10).map((color) => (
+          <Flex flexWrap="wrap" gap={1}>
+            {colors.slice(0, 12).map((color) => (
               <Button
                 key={color}
                 onClick={() => {
