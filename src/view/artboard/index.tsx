@@ -18,6 +18,7 @@ import LeftControl from './leftPanel';
 import fabric from './preset';
 import RightControl from './rightPanel';
 import MouseMenu from './MouseMenu';
+import AdSense from './components/AdSense';
 
 const { addImageFromURL, setCanvas, updateCanvasRect } = api;
 const dpr = getDPR();
@@ -115,6 +116,7 @@ export default function Artboard() {
       <RightControl />
       <CenterControl />
       <MouseMenu />
+      <AdSense />
     </div>
   );
 }

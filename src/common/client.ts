@@ -37,3 +37,25 @@ export function getPaperSize(size: keyof PaperSizes): { width: number; height: n
     return new Error('Invalid paper size');
   }
 }
+
+export function loadScriptSync(url: string, props: Record<string, string | number | boolean>) {
+  return new Promise<void>((resolve) => {
+    const script: any = document.createElement('script');
+    if (script.readyState) {
+      script.onreadystatechange = function () {
+        if (script.readyState == 'loaded' || this.readyState == 'complete') {
+          resolve();
+        }
+      };
+    } else {
+      script.onload = () => {
+        resolve();
+      };
+    }
+    script.src = url;
+    Object.keys(props || {}).forEach((key) => {
+      script.setAttribute(key, props[key]);
+    });
+    document.head.appendChild(script);
+  });
+}
