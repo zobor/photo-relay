@@ -2,7 +2,7 @@ import UploadImage from '@/components/UploadImage';
 import usePaste from '@/hooks/usePaste';
 import { Button, Center, Flex, Image, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip } from '@chakra-ui/react';
 import Scrollbars from 'rc-scrollbars';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getDPR } from '../../common/client';
 import { getClipboardData, getImageRect } from '../../common/file';
 import Icon from '../../components/Icon';
@@ -16,6 +16,8 @@ import api from './apiServices';
 import config from './config';
 import icons from './icons';
 import ModalPhotos from './ModalPhotos';
+import Template from './template';
+import Confirm from '@/components/Confirm';
 
 const { addImageFromURL, getCanvasRect, insertText, removeBackgroundImage } = api;
 const dpr = getDPR();
@@ -65,6 +67,20 @@ function Material() {
   const { font, setFonts, setFont, color, setColor } = usePhotoStore();
   const { width: artboardWidth, height: artboardHeight, changeRect } = useArtboardStore();
   const toast = useTheToast();
+  const service = useRef<Template>();
+
+  useEffect(() => {
+    service.current = new Template();
+    service.current.init({
+      resizeArtboard: ({ width, height }: { width: number; height: number }) => changeRect({ width, height }),
+      api,
+    });
+  }, []);
+
+  const onApplyTemplate = useCallback((tplId: number) => {
+    service.current?.run(tplId);
+  }, []);
+
   const onClickAddText = () => {
     insertText({
       defaultStyle: {
@@ -197,34 +213,6 @@ function Material() {
               src="https://img.duelpeak.com/duelpeak/202312/8fbfe74efc4cb5b1dbc1eff78c1ff7bf9ee1fcaf2846983998862300ffee427e.webp"
             />
           </Tooltip>
-          {/* <Tooltip
-            placement="top"
-            hasArrow
-            label="Add Background Image From Clipboard"
-            bg={tooltipsBackgroundColor}
-            color="white"
-          >
-            <Image
-              cursor="pointer"
-              onClick={onAddBackgroundImageFromClipboard}
-              w="40px"
-              borderRadius="10px"
-              bg="#edf2f7"
-              padding="5px"
-              src="https://img.duelpeak.com/duelpeak/202312/838b960c8721fc0903c01b49d7b1e0beb723e15cc7371f3bba9a01609986436f.webp"
-            />
-          </Tooltip> */}
-          {/* <Tooltip placement="top" hasArrow label="Show More Image Material" bg={tooltipsBackgroundColor} color="white">
-            <Image
-              cursor="pointer"
-              onClick={onRemoveBgImage}
-              w="40px"
-              borderRadius="10px"
-              bg="#edf2f7"
-              padding="5px"
-              src="https://img.duelpeak.com/duelpeak/202312/38ceb74cd4ab7ae2573a19af4d60288f0d6febffffed4a231ebb40493aa04d63.webp"
-            />
-          </Tooltip> */}
         </Flex>
         <UploadImage onChange={onUploadBackgroundImage} myRef={uploadBackgroundImageRef} />
         <Flex alignItems={'center'} justifyContent={'space-between'}>
@@ -253,6 +241,28 @@ function Material() {
           <ModalPhotos />
           <UploadImage onChange={onUploadImage} myRef={input} />
         </Flex>
+      </Flex>
+
+      <Flex alignItems={'center'} justifyContent={'space-between'}>
+        <Text as="b" py={2} fontSize="xl">
+          Template
+        </Text>
+      </Flex>
+
+      <Flex>
+        {service.current?.demos?.length
+          ? service.current.demos.map((url: string, index: number) => (
+              <Confirm
+                key={url}
+                title="Template Confirm"
+                content="Do you want to clear the artboard and apply the template content?"
+                okText="Apply Template"
+                onOk={onApplyTemplate.bind(null, index + 1)}
+              >
+                <Img src={url} />
+              </Confirm>
+            ))
+          : undefined}
       </Flex>
     </Scrollbars>
   );

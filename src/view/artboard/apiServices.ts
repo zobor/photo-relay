@@ -54,7 +54,7 @@ class ApiService {
       left: 0,
     };
 
-    if (autocenter && selectable && isObject(position)) {
+    if (autocenter && selectable && !isObject(position)) {
       let w = width;
       let h = height;
 
@@ -65,7 +65,7 @@ class ApiService {
       rect.left = (canvas.width - w) / 2;
       rect.top = (canvas.height - h) / 2;
     }
-    if (!isObject(position)) {
+    if (isObject(position)) {
       rect.left = position.left;
       rect.top = position.top;
     }
@@ -115,7 +115,7 @@ class ApiService {
     canvas.renderAll();
   };
 
-  setBackgroundColor = ({ color }: any) => {
+  setBackgroundColor = ({ color }: { color: string }) => {
     const { canvas } = this;
     canvas.backgroundColor = color;
     canvas.renderAll();
@@ -158,14 +158,13 @@ class ApiService {
 
     return new Promise((resolve, reject) => {
       image.setAttribute('crossOrigin', 'Anonymous');
-      // image.crossOrigin = 'true';
       image.onload = () => {
         image.onload = () => {};
         const { width, height } = image;
         const artboardRect = getCanvasRect();
 
-        if (width > artboardRect.width || height > artboardRect.height) {
-          zoom = Math.min((artboardRect.width / width) * 0.8, (artboardRect.height / height) * 0.8);
+        if (width > artboardRect.width * 0.6 || height > artboardRect.height * 0.6) {
+          zoom = Math.min((artboardRect.width / width) * 0.6, (artboardRect.height / height) * 0.6);
         }
 
         if (selected && selected.scaleX) {
@@ -181,6 +180,8 @@ class ApiService {
           scale: zoom,
           position,
         });
+
+        resolve();
       };
       image.onerror = () => {
         image.onerror = () => {};
