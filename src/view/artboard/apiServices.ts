@@ -129,8 +129,14 @@ class ApiService {
     return { width: Math.floor(width / dpr), height: Math.floor(height / dpr) };
   };
 
-  addImageFromURL = ({ url, selectable = true, scale = 1, position = {} }: NSArtboard.addImageFromURLParams) => {
-    const { canvas, getSelected, getSelectedType, getCanvasRect, addImage } = this;
+  addImageFromURL = ({
+    url,
+    selectable = true,
+    scale = 1,
+    position = {},
+    autoFocus,
+  }: NSArtboard.addImageFromURLParams) => {
+    const { getSelected, getSelectedType, getCanvasRect, addImage } = this;
     const image = new Image();
     let zoom = scale;
     const selected = getSelected();
@@ -139,7 +145,7 @@ class ApiService {
       const type = getSelectedType(selected);
 
       if (type === 'i-text') {
-        return Promise.reject(new Error('文本不能替换为图片'));
+        return Promise.reject(new Error('Text cannot be replaced with an image'));
       }
     }
 
@@ -167,13 +173,16 @@ class ApiService {
           selectable,
           scale: zoom,
           position,
+          autoFocus,
         });
 
-        resolve(true);
+        setTimeout(() => {
+          Promise.resolve(() => resolve(true));
+        }, 2000);
       };
       image.onerror = () => {
         image.onerror = () => {};
-        reject(new Error('贴纸资源获取失败'));
+        reject(new Error('Failed to obtain sticker resources'));
       };
 
       image.src = url;
@@ -189,12 +198,13 @@ class ApiService {
     return canvas.getActiveObject();
   };
 
-  getSelectedType = (selected: any): NSArtboard.SelectedType => {
-    if (!selected) {
+  getSelectedType = (selected?: any): NSArtboard.SelectedType => {
+    const select = selected || this.getSelected();
+    if (!select) {
       return '';
     }
 
-    return selected.type;
+    return select.type;
   };
 
   unSelectAll = () => {
@@ -203,6 +213,10 @@ class ApiService {
       canvas.discardActiveObject();
       canvas.renderAll();
     }
+  };
+
+  clear = () => {
+    this.canvas.clear();
   };
 
   changeCanvasBackgroundImage = (image: HTMLImageElement) => {
@@ -284,6 +298,8 @@ class ApiService {
       ...styles,
     });
 
+    rect.set('id' as any, getRandString());
+
     this.canvas.add(rect);
     this.canvas.setActiveObject(rect);
   };
@@ -361,6 +377,17 @@ class ApiService {
           break;
         case 'center':
           el.center();
+          break;
+        case 'x-center':
+          const y = el.get('top');
+          el.center();
+          el.set('top', y);
+          break;
+        case 'y-center':
+          const x = el.get('left');
+          el.center();
+          el.set('left', x);
+          break;
       }
       canvas.renderAll();
     }
@@ -425,7 +452,7 @@ class ApiService {
   changeTextOrShapeColor = (color: string) => {
     const { getSelectedType, getSelected, changeStyle, changeShapeFillColor } = this;
     const type = getSelectedType(getSelected());
-    if (type === 'i-text') {
+    if (type === 'i-text' || type === 'rect') {
       changeStyle({ fill: color });
     } else {
       changeShapeFillColor(color);

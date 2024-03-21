@@ -22,15 +22,18 @@ import ResizeArtboard from './resizeArtboard';
 import Icon from '@/components/Icon';
 const { changeTextOrShapeColor, changeStyle } = api;
 const marginTop = 2;
+const colorPickerStyles = { cursor: 'pointer', width: 24 };
 
 function Control(): any {
   const { fonts, setFonts, setFont, setColor } = usePhotoStore();
-  const { changeRightPanelDetail, layer, update } = useArtboardStore();
+  const { changeRightPanelDetail, layer } = useArtboardStore();
   const { type } = layer;
   const isText = type === 'i-text';
   const isImage = type === 'image';
   const isGroup = type === 'group';
+  const isRect = type === 'rect';
   const isImageCanBeColored = isImage && api.checkImageCanBeColored(layer?._element);
+  const isNeedShowFill = isText || isImageCanBeColored || isRect;
 
   const fetchLocalFonts = () => {
     getLocalFonts().then((rs) => {
@@ -70,11 +73,6 @@ function Control(): any {
             </Text>
           </Center>
           <ResizeArtboard />
-          {/* <Center flex={1}>
-            <Text as="i" py={2} fontSize="xl">
-              No Selected
-            </Text>
-          </Center> */}
         </Flex>
       </Scrollbars>
     );
@@ -175,7 +173,7 @@ function Control(): any {
         <Text as="b" py={2} fontSize="xl" mt={marginTop}>
           Layout
         </Text>
-        <Flex gap={5}>
+        <Flex gap={3}>
           <Tooltip placement="top" hasArrow label="top" bg="gray.300" color="black">
             <Text>
               <Icon type="layout_top" onClick={() => api.setLayout('top')} />
@@ -196,7 +194,17 @@ function Control(): any {
               <Icon type="layout_left" onClick={() => api.setLayout('left')} />
             </Text>
           </Tooltip>
-          <Tooltip placement="top" hasArrow label="center" bg="gray.300" color="black">
+          <Tooltip placement="top" hasArrow label="x center" bg="gray.300" color="black">
+            <Text>
+              <Icon type="layout_x_center" onClick={() => api.setLayout('x-center')} />
+            </Text>
+          </Tooltip>
+          <Tooltip placement="top" hasArrow label="y center" bg="gray.300" color="black">
+            <Text>
+              <Icon type="layout_y_center" onClick={() => api.setLayout('y-center')} />
+            </Text>
+          </Tooltip>
+          <Tooltip placement="top" hasArrow label="x&y center" bg="gray.300" color="black">
             <Text>
               <Icon type="layout_center" onClick={() => api.setLayout('center')} />
             </Text>
@@ -321,36 +329,51 @@ function Control(): any {
           </Flex>
         ) : null}
 
-        {isText || isImageCanBeColored ? (
+        {isNeedShowFill ? (
           <Flex mt={marginTop} py={2}>
-            <Box flex={1}>
+            <Flex flex={1} direction={'column'} alignItems={'center'} bg="rgb(174, 214, 241)">
               <Text as="b" fontSize="xl">
                 Fill
               </Text>
-              <Box>
+              <Flex direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
                 <input
                   type="color"
                   defaultValue={layer.fill}
+                  style={colorPickerStyles}
                   onChange={(e) => {
                     changeTextColor(e.target.value);
                   }}
                 />
-              </Box>
-            </Box>
-            <Box>
+                <Badge ml={4} cursor={'pointer'} colorScheme="purple" onClick={() => changeRightPanelDetail('colors')}>
+                  more
+                </Badge>
+              </Flex>
+              <Center>
+                <Text fontSize={13}>{layer.fill || ''}</Text>
+              </Center>
+            </Flex>
+
+            <Flex flex={1} direction={'column'} alignItems={'center'} bg="rgb(208, 236, 231)">
               <Text as="b" fontSize="xl">
-                Border Color
+                Border
               </Text>
-              <Box>
+              <Flex direction={'row'} alignItems={'center'}>
                 <input
                   type="color"
                   defaultValue={layer.stroke}
+                  style={colorPickerStyles}
                   onChange={(e) => {
                     changeStyle({ borderColor: e.target.value });
                   }}
                 />
-              </Box>
-            </Box>
+                <Badge ml={4} cursor={'pointer'} colorScheme="purple" onClick={() => changeRightPanelDetail('colors')}>
+                  more
+                </Badge>
+              </Flex>
+              <Center>
+                <Text fontSize={13}>{layer.stroke || ''}</Text>
+              </Center>
+            </Flex>
           </Flex>
         ) : null}
 
@@ -384,8 +407,8 @@ function Control(): any {
           </Flex>
         ) : null}
         {isGroup ? undefined : (
-          <Flex alignItems={'center'} justifyContent={'space-between'} mt={marginTop}>
-            <Text as="b" py={2} fontSize="xl" mt={marginTop}>
+          <Flex alignItems={'center'} justifyContent={'space-between'} mt={marginTop} py={2}>
+            <Text as="b" fontSize="xl">
               Border Style
             </Text>
             <Badge cursor={'pointer'} colorScheme="purple" onClick={() => changeRightPanelDetail('borders')}>
@@ -395,7 +418,7 @@ function Control(): any {
         )}
         {isGroup ? undefined : (
           <Flex flexWrap="wrap" gap={1}>
-            {colors.slice(0, 12).map((color) => (
+            {colors.slice(0, 16).map((color) => (
               <Button
                 key={color}
                 onClick={() => {
@@ -407,7 +430,7 @@ function Control(): any {
                 fontSize={30}
                 style={{ WebkitTextStroke: `2px ${color}` } as any}
               >
-                P
+                S
               </Button>
             ))}
           </Flex>

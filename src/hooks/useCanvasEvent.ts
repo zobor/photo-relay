@@ -4,12 +4,10 @@
  */
 import { rx } from '@/common/rx';
 import { get } from 'lodash';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import api from '../view/artboard/apiServices';
 
 export function useCanvasEvent(ready: boolean) {
-  const ref: any = useRef();
-
   useEffect(() => {
     if (!api.canvas) return;
     // selection

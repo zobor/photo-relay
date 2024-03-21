@@ -134,6 +134,7 @@ export default class Template {
               top: 258,
             },
             scale: 1.48,
+            autoFocus: false,
           },
         },
         {
@@ -185,9 +186,28 @@ export default class Template {
     return data;
   };
 
-  run = (id: number) => {
+  delay = (timeout: number) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, timeout);
+    });
+  };
+
+  run = async (id: number) => {
     const tasks: any = this.data(id);
-    tasks.forEach(async (task: any) => {
+    // tasks.forEach(async (task: any) => {
+    //   const fn = (this as any)[task.type] || (this as any).api[task.type];
+
+    //   if (fn.constructor.name === 'AsyncFunction') {
+    //     await fn(task.props);
+    //   } else {
+    //     fn(task.props);
+    //   }
+    //   (this as any).api.unSelectAll();
+    // });
+
+    for (const task of tasks) {
       const fn = (this as any)[task.type] || (this as any).api[task.type];
 
       if (fn.constructor.name === 'AsyncFunction') {
@@ -195,7 +215,8 @@ export default class Template {
       } else {
         fn(task.props);
       }
+      // await this.delay(300);
       (this as any).api.unSelectAll();
-    });
+    }
   };
 }

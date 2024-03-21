@@ -80,7 +80,7 @@ export default function Artboard() {
     if (width && height) {
       setPosition({
         x: (window.innerWidth - width / dpr) / 2,
-        y: (window.innerHeight - height / dpr) / 2,
+        y: (window.innerHeight - height / dpr) / 2 + 100,
       });
     }
   }, [width, height, ready]);

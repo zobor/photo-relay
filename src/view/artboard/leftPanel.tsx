@@ -1,25 +1,38 @@
+import Confirm from '@/components/Confirm';
 import UploadImage from '@/components/UploadImage';
 import usePaste from '@/hooks/usePaste';
-import { Button, Center, Flex, Image, Img, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Flex,
+  Image,
+  Img,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
 import Scrollbars from 'rc-scrollbars';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getDPR } from '../../common/client';
-import { getClipboardData, getImageRect } from '../../common/file';
+import { getImageRect } from '../../common/file';
 import Icon from '../../components/Icon';
 import { useTheToast } from '../../hooks/useUi';
 import useArtboardStore from '../../store/artboard';
 import usePhotoStore from '../../store/photo';
 import ShowChangeBackgroundColor from './ChangeArtboardBgColor';
 import Layers from './Layers';
+import ModalPhotos from './ModalPhotos';
 import ShowMoreShapes from './ShowMoreShapes';
 import api from './apiServices';
 import config from './config';
 import icons from './icons';
-import ModalPhotos from './ModalPhotos';
 import Template from './template';
-import Confirm from '@/components/Confirm';
 
-const { addImageFromURL, getCanvasRect, insertText, removeBackgroundImage } = api;
+const { addImageFromURL, getCanvasRect, insertText, removeBackgroundImage, insertRect } = api;
 const dpr = getDPR();
 const tooltipsBackgroundColor = '#f54990';
 
@@ -78,10 +91,11 @@ function Material() {
   }, []);
 
   const onApplyTemplate = useCallback((tplId: number) => {
+    api.clear();
     service.current?.run(tplId);
   }, []);
 
-  const onClickAddText = () => {
+  const onClickAddText = useCallback(() => {
     insertText({
       defaultStyle: {
         ...config.textStyle,
@@ -89,7 +103,10 @@ function Material() {
         fontFamily: font || '',
       },
     });
-  };
+  }, []);
+  const onClickAddRect = useCallback(() => {
+    insertRect({});
+  }, []);
   const onClickShape = (url: string) => {
     addImageFromURL({
       url,
@@ -157,14 +174,22 @@ function Material() {
     <Scrollbars style={{ height: '100%' }} autoHide>
       <Flex direction={'column'}>
         <Text as="b" py={2} fontSize="xl">
-          Text
+          Insert
         </Text>
-        <Button onClick={onClickAddText} colorScheme="purple">
-          <Center gap={2}>
-            <Icon type="add" fill="#fff" />
-            <span>New Text</span>
-          </Center>
-        </Button>
+        <Flex direction={'column'} gap={1}>
+          <Button onClick={onClickAddText} colorScheme="purple">
+            <Center gap={2}>
+              <Icon type="add" fill="#fff" />
+              <span>New Text</span>
+            </Center>
+          </Button>
+          <Button onClick={onClickAddRect} colorScheme="purple">
+            <Center gap={2}>
+              <Icon type="add" fill="#fff" />
+              <span>New Rectangle</span>
+            </Center>
+          </Button>
+        </Flex>
         <Flex alignItems={'center'} justifyContent={'space-between'}>
           <Text as="b" fontSize="xl">
             Shape
@@ -259,7 +284,7 @@ function Material() {
                 okText="Apply Template"
                 onOk={onApplyTemplate.bind(null, index + 1)}
               >
-                <Img src={url} />
+                <Img src={url} cursor={'pointer'} />
               </Confirm>
             ))
           : undefined}

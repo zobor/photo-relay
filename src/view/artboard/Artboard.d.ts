@@ -4,7 +4,7 @@ namespace NSArtboard {
     top?: number;
   };
 
-  type SelectedType = '' | 'i-text' | 'image' | 'group';
+  type SelectedType = '' | 'i-text' | 'image' | 'group' | 'rect';
 
   type TextStyles = {
     color?: string;
@@ -21,7 +21,7 @@ namespace NSArtboard {
     linethrough?: boolean;
   };
 
-  type Dir = 'top' | 'right' | 'bottom' | 'left' | 'center';
+  type Dir = 'top' | 'right' | 'bottom' | 'left' | 'center' | 'x-center' | 'y-center';
 
   interface addImageParams {
     imageTag: HTMLImageElement;
@@ -40,6 +40,7 @@ namespace NSArtboard {
     selectable?: boolean;
     scale?: number;
     position?: Position;
+    autoFocus?: boolean;
   }
 
   interface insertTextParams {

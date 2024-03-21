@@ -145,7 +145,7 @@ export default function ResizeArtboard() {
         Background Color
       </Text>
       <Flex>
-        <input type="color" onChange={onChangeColor} />
+        <input type="color" style={{ width: 24 }} onChange={onChangeColor} />
       </Flex>
     </div>
   );

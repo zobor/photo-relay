@@ -63,7 +63,7 @@ export default function ShowMorePanel() {
         ) : null}
 
         {rightPanelDetail === 'borders' && fonts.length ? (
-          <Flex flexWrap="wrap" gap={2}>
+          <Flex flexWrap="wrap" gap={1}>
             {colors.map((color) => (
               <Button
                 key={color}
