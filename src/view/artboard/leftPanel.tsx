@@ -1,6 +1,6 @@
 import UploadImage from '@/components/UploadImage';
 import usePaste from '@/hooks/usePaste';
-import { Button, Center, Flex, Image, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip } from '@chakra-ui/react';
+import { Button, Center, Flex, Image, Img, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip } from '@chakra-ui/react';
 import Scrollbars from 'rc-scrollbars';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getDPR } from '../../common/client';
@@ -249,7 +249,7 @@ function Material() {
         </Text>
       </Flex>
 
-      <Flex>
+      <Flex flexDirection={'column'} gap={2}>
         {service.current?.demos?.length
           ? service.current.demos.map((url: string, index: number) => (
               <Confirm

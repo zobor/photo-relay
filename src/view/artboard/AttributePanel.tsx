@@ -404,7 +404,7 @@ function Control(): any {
                     borderWidth: 8,
                   });
                 }}
-                fontSize={33}
+                fontSize={30}
                 style={{ WebkitTextStroke: `2px ${color}` } as any}
               >
                 P

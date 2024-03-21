@@ -9,7 +9,8 @@ export const originalScaleControl = fabric.Object.prototype.controls.br;
 export function renderIcon(iconObject: HTMLImageElement) {
   return function (
     this: { cornerSize: number },
-    ctx: OffscreenCanvasRenderingContext2D,
+    // ctx: OffscreenCanvasRenderingContext2D,
+    ctx: any,
     left: number,
     top: number,
     styleOverride: any,

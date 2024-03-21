@@ -6,6 +6,7 @@ import { getRandString } from '../../common/math.js';
 import { imagePrefix } from './Constant.js';
 import config from './config.js';
 import fabric from './preset.js';
+import _ from 'lodash';
 
 const dpr = getDPR();
 
@@ -41,11 +42,10 @@ class ApiService {
     scale = 1,
     autoFocus = true,
     removeCurrentSelected = true,
-  }: any) => {
+  }: NSArtboard.addImageParams) => {
     const { canvas, getSelected } = this;
     const image = imageTag;
     image.setAttribute('crossOrigin', 'Anonymous');
-    image.crossOrigin = true;
 
     const rect = {
       width,
@@ -65,7 +65,7 @@ class ApiService {
       rect.left = (canvas.width - w) / 2;
       rect.top = (canvas.height - h) / 2;
     }
-    if (isObject(position)) {
+    if (isObject(position) && _.isNumber(position.left) && _.isNumber(position.top)) {
       rect.left = position.left;
       rect.top = position.top;
     }
@@ -129,20 +129,7 @@ class ApiService {
     return { width: Math.floor(width / dpr), height: Math.floor(height / dpr) };
   };
 
-  addImageFromURL = ({
-    url,
-    selectable = true,
-    scale = 1,
-    position = {},
-  }: {
-    url: string;
-    selectable?: boolean;
-    scale?: number;
-    position?: {
-      x?: number;
-      y?: number;
-    };
-  }) => {
+  addImageFromURL = ({ url, selectable = true, scale = 1, position = {} }: NSArtboard.addImageFromURLParams) => {
     const { canvas, getSelected, getSelectedType, getCanvasRect, addImage } = this;
     const image = new Image();
     let zoom = scale;
@@ -163,16 +150,17 @@ class ApiService {
         const { width, height } = image;
         const artboardRect = getCanvasRect();
 
-        if (width > artboardRect.width * 0.6 || height > artboardRect.height * 0.6) {
-          zoom = Math.min((artboardRect.width / width) * 0.6, (artboardRect.height / height) * 0.6);
-        }
+        if (scale === 1) {
+          if (width > artboardRect.width * 0.6 || height > artboardRect.height * 0.6) {
+            zoom = Math.min((artboardRect.width / width) * 0.6, (artboardRect.height / height) * 0.6);
+          }
 
-        if (selected && selected.scaleX) {
-          zoom = selected.scaleX;
+          if (selected && selected.scaleX) {
+            zoom = selected.scaleX;
+          }
         }
 
         addImage({
-          canvas,
           imageTag: image,
           width,
           height,
@@ -181,7 +169,7 @@ class ApiService {
           position,
         });
 
-        resolve();
+        resolve(true);
       };
       image.onerror = () => {
         image.onerror = () => {};
@@ -201,7 +189,7 @@ class ApiService {
     return canvas.getActiveObject();
   };
 
-  getSelectedType = (selected: any) => {
+  getSelectedType = (selected: any): NSArtboard.SelectedType => {
     if (!selected) {
       return '';
     }
@@ -217,9 +205,10 @@ class ApiService {
     }
   };
 
-  changeCanvasBackgroundImage = (image: any) => {
+  changeCanvasBackgroundImage = (image: HTMLImageElement) => {
     const { canvas } = this;
-    image.crossOrigin = true;
+    image.setAttribute('crossOrigin', 'Anonymous');
+
     fabric.Image.fromURL(
       image.src,
       (img) => {
@@ -232,7 +221,12 @@ class ApiService {
     );
   };
 
-  insertText = ({ text = 'DuelPeak', defaultStyle = config.textStyle, autocenter = true }: any) => {
+  insertText = ({
+    text = 'DuelPeak',
+    defaultStyle = config.textStyle,
+    autocenter = true,
+    scale,
+  }: NSArtboard.insertTextParams) => {
     const { canvas, changeStyle } = this;
     const rect = {
       width: 150,
@@ -253,7 +247,12 @@ class ApiService {
       ...defaultStyle,
     };
 
-    const textbox: any = new fabric.IText(text, textParams);
+    const textbox: any = new fabric.IText(text, textParams as any);
+
+    if (scale) {
+      textbox.set('scaleX', scale);
+      textbox.set('scaleY', scale);
+    }
 
     if (autocenter) {
       const { width, height } = canvas;
@@ -272,7 +271,24 @@ class ApiService {
     changeStyle({ fill: defaultStyle.fill || '#333' });
   };
 
-  translateFontCss2Attribute = (styles: Record<string, string>) => {
+  insertRect = (styles: NSArtboard.TextStyles) => {
+    const rect = new fabric.Rect({
+      left: 100,
+      top: 100,
+      // fill: 'yellow',
+      width: 400,
+      height: 100,
+      objectCaching: false,
+      stroke: 'lightgreen',
+      strokeWidth: 4,
+      ...styles,
+    });
+
+    this.canvas.add(rect);
+    this.canvas.setActiveObject(rect);
+  };
+
+  translateFontCss2Attribute = (styles: NSArtboard.TextStyles) => {
     const cssMap: Record<string, string> = {
       borderWidth: 'strokeWidth',
       borderColor: 'stroke',
@@ -291,16 +307,16 @@ class ApiService {
           blur: 0,
         });
       } else if (newKey) {
-        newStyle[newKey] = styles[key];
+        newStyle[newKey] = (styles as any)[key];
       } else {
-        newStyle[key] = styles[key];
+        newStyle[key] = (styles as any)[key];
       }
     });
 
     return newStyle;
   };
 
-  changeStyle = (styles = {}) => {
+  changeStyle = (styles: NSArtboard.TextStyles = {}) => {
     const { canvas, getSelected, translateFontCss2Attribute } = this;
     const text = getSelected();
 
@@ -325,7 +341,7 @@ class ApiService {
     return true;
   };
 
-  setLayout = (dir: 'top' | 'right' | 'bottom' | 'left' | 'center') => {
+  setLayout = (dir: NSArtboard.Dir) => {
     const { canvas, getSelected } = this;
     const el = getSelected();
 
@@ -396,7 +412,7 @@ class ApiService {
     }
   };
 
-  checkImageCanBeColored = (img: any) => {
+  checkImageCanBeColored = (img: HTMLImageElement) => {
     if (img?.src?.startsWith('http:') || img?.src?.startsWith('https:')) {
       if (img.src.includes('.svg')) {
         return true;
@@ -496,4 +512,5 @@ class ApiService {
 const api = ApiService.getInstance();
 export default api;
 
+// debug
 (window as any).ccc = api;
