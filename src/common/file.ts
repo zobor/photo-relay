@@ -131,3 +131,7 @@ export function getImageRect(url: string): Promise<{ width: number; height: numb
     };
   });
 }
+
+export function svgCodeToDataURL(svgCode: string): string {
+  return `data:image/svg+xml,${encodeURIComponent(svgCode)}`;
+}

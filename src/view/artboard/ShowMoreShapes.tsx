@@ -36,8 +36,6 @@ export default function ShowMoreShapes() {
         const dataURL = 'data:image/svg+xml,' + encodeURIComponent(str);
         addImageFromURL({
           url: dataURL,
-          selectable: true,
-          position: {},
           scale: 1.5,
         }).catch((err: any) => {
           toast({

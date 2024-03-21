@@ -23,7 +23,7 @@ import colors, { palette } from './colors';
 const { setBackgroundColor } = api;
 const tooltipsBackgroundColor = '#f54990';
 
-export default function ShowChangeBackgroundColor() {
+export default function ModalBgColors() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useTheToast();
   const onChangeColor = (color: string) => {

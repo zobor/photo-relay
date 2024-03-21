@@ -212,9 +212,7 @@ class ApiService {
           autoFocus,
         });
 
-        setTimeout(() => {
-          Promise.resolve(() => resolve(true));
-        }, 2000);
+        Promise.resolve(() => resolve(true));
       };
       image.onerror = () => {
         image.onerror = () => {};

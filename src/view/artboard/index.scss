@@ -157,3 +157,17 @@ $asideWidth: 250px;
     transform: translateX(-17px) !important;
   }
 }
+
+.svgViewBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+  background-color: rgb(214, 219, 223);
+  border-radius: 6px;
+
+  svg {
+    max-height: 160px;
+  }
+}

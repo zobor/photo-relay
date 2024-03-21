@@ -2,6 +2,7 @@ import Confirm from '@/components/Confirm';
 import UploadImage from '@/components/UploadImage';
 import usePaste from '@/hooks/usePaste';
 import {
+  Box,
   Button,
   Center,
   Flex,
@@ -23,7 +24,7 @@ import Icon from '../../components/Icon';
 import { useTheToast } from '../../hooks/useUi';
 import useArtboardStore from '../../store/artboard';
 import usePhotoStore from '../../store/photo';
-import ShowChangeBackgroundColor from './ChangeArtboardBgColor';
+import ModalBgColors from './ModalBgColors';
 import Layers from './Layers';
 import ModalPhotos from './ModalPhotos';
 import ShowMoreShapes from './ShowMoreShapes';
@@ -31,6 +32,7 @@ import api from './apiServices';
 import config from './config';
 import icons from './icons';
 import Template from './template';
+import ModalSvgEditor from './ModalSvgEditor';
 
 const { addImageFromURL, getCanvasRect, insertText, removeBackgroundImage, insertRect } = api;
 const dpr = getDPR();
@@ -107,6 +109,7 @@ function Material() {
   const onClickAddRect = useCallback(() => {
     insertRect({});
   }, []);
+  const onClickAddSVG = useCallback(() => {}, []);
   const onClickShape = (url: string) => {
     addImageFromURL({
       url,
@@ -193,6 +196,18 @@ function Material() {
               <span>New Rectangle</span>
             </Center>
           </Button>
+          <ModalSvgEditor
+            containerStyle={{
+              display: 'flex',
+            }}
+          >
+            <Button flex={1} onClick={onClickAddSVG} colorScheme="purple">
+              <Center gap={2}>
+                <Icon type="add" fill="#fff" />
+                <span>SVG</span>
+              </Center>
+            </Button>
+          </ModalSvgEditor>
         </Flex>
         <Flex alignItems={'center'} justifyContent={'space-between'}>
           <Text as="b" fontSize="xl">
@@ -207,68 +222,82 @@ function Material() {
             </Button>
           ))}
         </Flex>
-        <Flex alignItems={'center'} justifyContent={'space-between'}>
-          <Text as="b" py={2} fontSize="xl">
-            Background
-          </Text>
-        </Flex>
-        <Flex direction={'column'} gap={2} flexDir={'row'}>
-          <Tooltip
-            placement="top"
-            hasArrow
-            label="Set BackgroundImage From Local File"
-            bg={tooltipsBackgroundColor}
-            color="white"
-          >
-            <Image
-              bg="#edf2f7"
-              cursor="pointer"
-              padding="5px"
-              onClick={() => uploadBackgroundImageRef.current.click()}
-              src="https://img.duelpeak.com/duelpeak/202312/a1a388715b18e20ce285b61688b78df6ba2702ff47744a09058dcee9578d1ed8.webp"
-              w="40px"
-              borderRadius="10px"
-            />
-          </Tooltip>
-          <ShowChangeBackgroundColor />
-          <Tooltip placement="top" hasArrow label="Remove Background Image" bg={tooltipsBackgroundColor} color="white">
-            <Image
-              cursor="pointer"
-              onClick={onRemoveBgImage}
-              w="40px"
-              borderRadius="10px"
-              bg="#edf2f7"
-              padding="5px"
-              src="https://img.duelpeak.com/duelpeak/202312/8fbfe74efc4cb5b1dbc1eff78c1ff7bf9ee1fcaf2846983998862300ffee427e.webp"
-            />
-          </Tooltip>
-        </Flex>
-        <UploadImage onChange={onUploadBackgroundImage} myRef={uploadBackgroundImageRef} />
-        <Flex alignItems={'center'} justifyContent={'space-between'}>
-          <Text as="b" py={2} fontSize="xl">
-            Image
-          </Text>
-        </Flex>
-        <Flex direction={'column'} gap={2} flexDir={'row'}>
-          <Tooltip
-            placement="top"
-            hasArrow
-            label="Add Image From Local File"
-            bg={tooltipsBackgroundColor}
-            color="white"
-          >
-            <Image
-              cursor="pointer"
-              bg="#edf2f7"
-              padding="5px"
-              onClick={() => input.current.click()}
-              src="https://img.duelpeak.com/duelpeak/202312/a1a388715b18e20ce285b61688b78df6ba2702ff47744a09058dcee9578d1ed8.webp"
-              w="40px"
-              borderRadius="10px"
-            />
-          </Tooltip>
-          <ModalPhotos />
-          <UploadImage onChange={onUploadImage} myRef={input} />
+
+        <Flex py={2}>
+          <Box bg="ivory">
+            <Flex alignItems={'center'} justifyContent={'space-between'}>
+              <Text as="b" fontSize="xl">
+                Background
+              </Text>
+            </Flex>
+            <Flex direction={'column'} gap={1} flexDir={'row'}>
+              <Tooltip
+                placement="top"
+                hasArrow
+                label="Set BackgroundImage From Local File"
+                bg={tooltipsBackgroundColor}
+                color="white"
+              >
+                <Image
+                  bg="#edf2f7"
+                  cursor="pointer"
+                  padding="5px"
+                  onClick={() => uploadBackgroundImageRef.current.click()}
+                  src="https://img.duelpeak.com/duelpeak/202312/a1a388715b18e20ce285b61688b78df6ba2702ff47744a09058dcee9578d1ed8.webp"
+                  w="40px"
+                  borderRadius="10px"
+                />
+              </Tooltip>
+              <ModalBgColors />
+              <Tooltip
+                placement="top"
+                hasArrow
+                label="Remove Background Image"
+                bg={tooltipsBackgroundColor}
+                color="white"
+              >
+                <Image
+                  cursor="pointer"
+                  onClick={onRemoveBgImage}
+                  w="40px"
+                  borderRadius="10px"
+                  bg="#edf2f7"
+                  padding="5px"
+                  src="https://img.duelpeak.com/duelpeak/202312/8fbfe74efc4cb5b1dbc1eff78c1ff7bf9ee1fcaf2846983998862300ffee427e.webp"
+                />
+              </Tooltip>
+            </Flex>
+            <UploadImage onChange={onUploadBackgroundImage} myRef={uploadBackgroundImageRef} />
+          </Box>
+
+          <Center ml={1} bg="bisque" flex={1} flexDirection={'column'}>
+            <Flex alignItems={'center'} justifyContent={'space-between'}>
+              <Text as="b" fontSize="xl">
+                Image
+              </Text>
+            </Flex>
+            <Flex direction={'column'} gap={1} flexDir={'row'}>
+              <Tooltip
+                placement="top"
+                hasArrow
+                label="Add Image From Local File"
+                bg={tooltipsBackgroundColor}
+                color="white"
+              >
+                <Image
+                  cursor="pointer"
+                  bg="#edf2f7"
+                  padding="5px"
+                  onClick={() => input.current.click()}
+                  src="https://img.duelpeak.com/duelpeak/202312/a1a388715b18e20ce285b61688b78df6ba2702ff47744a09058dcee9578d1ed8.webp"
+                  w="40px"
+                  borderRadius="10px"
+                />
+              </Tooltip>
+              <ModalPhotos />
+              <UploadImage onChange={onUploadImage} myRef={input} />
+            </Flex>
+          </Center>
         </Flex>
       </Flex>
 
