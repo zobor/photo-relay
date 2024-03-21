@@ -6,7 +6,7 @@ import { useCanvasEvent } from '@/hooks/useCanvasEvent';
 import { Box } from '@chakra-ui/react';
 import { pick } from 'lodash';
 import Scrollbars from 'rc-scrollbars';
-import { useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 import { getDPR } from '../../common/client';
 import { useHotKey } from '../../hooks/useWindows';
@@ -86,18 +86,23 @@ export default function Artboard() {
   }, [width, height, ready]);
 
   useHotKey({
-    keyDownCallback: (keyCode) => {
+    keyDownCallback: (e: React.KeyboardEvent) => {
       // when press space, you can drag artboard to any postion
-      switch (keyCode) {
+      switch (e.keyCode) {
         case 32:
+          if (api.getSelectedType() !== 'i-text') {
+            e.preventDefault();
+          }
           update({ dragDisabled: false });
           break;
         case 8:
-          api.removeSelected();
+          if (api.getSelectedType() !== 'i-text') {
+            api.removeSelected();
+          }
           break;
       }
     },
-    keyUpCallback: () => {
+    keyUpCallback: (e?: React.KeyboardEvent) => {
       // when keyup, you can not drag any more
       update({ dragDisabled: true });
     },

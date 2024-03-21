@@ -18,22 +18,19 @@ export function useHotKey({
   keyUpCallback,
   keyDownCallback,
 }: {
-  keyUpCallback: () => void;
-  keyDownCallback: (keyCode: number) => void;
+  keyUpCallback: (e: React.KeyboardEvent) => void;
+  keyDownCallback: (e: React.KeyboardEvent) => void;
 }) {
   useEffect(() => {
     // 键盘事件
-    const keyDown = (e: KeyboardEvent) => {
+    const keyDown = (e: any) => {
       if (keyDownCallback) {
-        keyDownCallback(e.keyCode);
-      }
-      if (e.keyCode === 32) {
-        e.preventDefault();
+        keyDownCallback(e);
       }
     };
-    const keyUp = () => {
+    const keyUp = (e: any) => {
       if (keyUpCallback) {
-        keyUpCallback();
+        keyUpCallback(e);
       }
     };
 
