@@ -23,6 +23,9 @@ type Layer = {
   scaleY?: number;
   scaleX?: number;
   _element?: any;
+  opacity?: number;
+  rx?: number;
+  ry?: number;
 
   // text
   fontFamily?: string;
@@ -47,6 +50,7 @@ interface ArtboardState {
   changeRightPanelDetail: (type: string) => void;
   updatePresetBackGround: (url: string) => void;
   update: (data: Partial<ArtboardState>) => void;
+  updateLayer: (data: Record<string, string | number>) => void;
 }
 
 const dpr = getDPR();
@@ -70,6 +74,11 @@ const useArtboardStore = createStore<ArtboardState>((set) => ({
   update: (data: Partial<ArtboardState>) => {
     set((draft) => {
       Object.assign(draft, data);
+    });
+  },
+  updateLayer: (data: Record<string, string | number>) => {
+    set((draft) => {
+      Object.assign(draft.layer, data);
     });
   },
   updateScale: (scale: number) => {

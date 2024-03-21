@@ -12,30 +12,30 @@ export function useCanvasEvent(ready: boolean) {
     if (!api.canvas) return;
     // selection
     api.canvas.on('before:selection:cleared', (event: any) => {
-      console.log('before:selection:cleared');
+      // console.log('before:selection:cleared');
     });
     api.canvas.on('selection:updated', (event: any) => {
-      console.log('selection:updated');
+      // console.log('selection:updated');
       rx.next({
         type: 'selection:updated',
         data: get(event, 'selected[0]'),
       });
     });
     api.canvas.on('selection:cleared', (event: any) => {
-      console.log('clear');
+      // console.log('clear');
       rx.next({
         type: 'selection:cleared',
       });
     });
     api.canvas.on('selection:created', (event: any) => {
-      console.log('selection:created');
+      // console.log('selection:created');
       rx.next({
         type: 'selection:created',
         data: get(event, 'selected[0]'),
       });
     });
     api.canvas.on('object:moving', (event: any) => {
-      console.log('object:moving');
+      // console.log('object:moving');
       rx.next({
         type: 'object:moving',
         data: event.target,
@@ -44,14 +44,14 @@ export function useCanvasEvent(ready: boolean) {
 
     // object
     api.canvas.on('object:added', (event: any) => {
-      console.log('object:added');
+      // console.log('object:added');
       rx.next({
         type: 'object:added',
         data: get(event, 'selected[0]'),
       });
     });
     api.canvas.on('object:modified', (event: any) => {
-      console.log('object:modified');
+      // console.log('object:modified');
       rx.next({
         type: 'object:modified',
         data: event.target,

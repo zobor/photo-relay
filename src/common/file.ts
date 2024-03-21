@@ -60,7 +60,6 @@ export function getFileBase64(file: File): Promise<string> {
         resolve(reader.result as string);
       };
     } else {
-      console.log(file);
       reject(new Error(`The selected file is not in image format, your file type=${file.type}`));
     }
   });

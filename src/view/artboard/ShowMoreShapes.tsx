@@ -27,7 +27,6 @@ export default function ShowMoreShapes() {
     const onmessage = (e: any) => {
       if (e?.data?.type === 'request-add-icon' && e?.data?.data) {
         const size = 64;
-        console.log(e);
         const svg = e.data.data;
         const str = e.data?.reparse
           ? svg
@@ -41,7 +40,11 @@ export default function ShowMoreShapes() {
           position: {},
           scale: 1.5,
         }).catch((err: any) => {
-          console.log(err.message || 'Fail To Load Resource');
+          toast({
+            title: 'Error',
+            description: err.message || 'Fail To Load Resource',
+            status: 'error',
+          });
         });
         toast({
           title: 'Shape created.',

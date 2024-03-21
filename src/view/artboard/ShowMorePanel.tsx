@@ -9,11 +9,15 @@ import colors, { palette } from './colors';
 const { changeStyle } = api;
 
 export default function ShowMorePanel() {
-  const { fonts, font, setFonts, setFont, color, setColor } = usePhotoStore();
+  const { fonts, setFont, setColor } = usePhotoStore();
   const { rightPanelDetail, changeRightPanelDetail } = useArtboardStore();
   const changeTextColor = (value: string) => {
     setColor(value);
     api.changeTextOrShapeColor(value);
+  };
+  const changeBorderColor = (value: string) => {
+    setColor(value);
+    api.changeStyle({ borderColor: value });
   };
 
   const onFontChange = (value: string) => {
@@ -42,6 +46,7 @@ export default function ShowMorePanel() {
       </Text>
       <Scrollbars>
         {rightPanelDetail === 'colors' ? <Colors onChange={changeTextColor} /> : null}
+        {rightPanelDetail === 'borderColors' ? <Colors onChange={changeBorderColor} /> : null}
 
         {rightPanelDetail === 'fonts' && fonts.length ? (
           <div className="fonts">
@@ -89,7 +94,7 @@ export default function ShowMorePanel() {
 function Colors({ onChange }: any) {
   return (
     <Tabs>
-      <TabList>
+      <TabList justifyContent={'center'}>
         <Tab>Palette</Tab>
         <Tab>Colors</Tab>
       </TabList>

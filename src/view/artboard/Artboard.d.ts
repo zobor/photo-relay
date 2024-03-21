@@ -8,7 +8,7 @@ namespace NSArtboard {
 
   type TextStyles = {
     color?: string;
-    fontWeight?: string;
+    fontWeight?: number | string;
     fontSize?: number;
     fontFamily?: string;
     fill?: string;
@@ -19,6 +19,12 @@ namespace NSArtboard {
     underline?: boolean;
     overline?: boolean;
     linethrough?: boolean;
+    opacity?: number;
+    width?: number;
+    height?: number;
+    rx?: number;
+    ry?: number;
+    cornerRadius?: number;
   };
 
   type Dir = 'top' | 'right' | 'bottom' | 'left' | 'center' | 'x-center' | 'y-center';
@@ -33,6 +39,7 @@ namespace NSArtboard {
     scale?: number;
     autoFocus?: boolean;
     removeCurrentSelected?: boolean;
+    borderRadius?: number;
   }
 
   interface addImageFromURLParams {

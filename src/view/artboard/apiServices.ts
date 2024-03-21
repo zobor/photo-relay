@@ -42,6 +42,7 @@ class ApiService {
     scale = 1,
     autoFocus = true,
     removeCurrentSelected = true,
+    borderRadius = 30,
   }: NSArtboard.addImageParams) => {
     const { canvas, getSelected } = this;
     const image = imageTag;
@@ -81,16 +82,51 @@ class ApiService {
       }
     }
 
+    // if (borderRadius) {
+    //   const rectBox = new fabric.Rect({
+    //     ...rect,
+    //     ...{
+    //       rx: borderRadius,
+    //       ry: borderRadius,
+    //       fill: 'red',
+    //     },
+    //   });
+    //   // canvas.add(rectBox);
+
+    //   // fabric.Image.fromURL(image.src, (img: any) => {
+    //   //   // rectBox.set('clipPath', img);
+    //   //   // console.log(img);
+    //   //   img.set({
+    //   //     clipTo: function (ctx: any) {
+    //   //       // return clipBySlot(ctx, image, rectBox);
+    //   //     },
+    //   //   });
+    //   //   canvas.add(img);
+    //   //   canvas.renderAll();
+    //   // });
+
+    //   canvas.renderAll();
+    //   return;
+    // }
+
+    // if (borderRadius) {
+
+    // }
+
     fabric.Image.fromURL(
       image.src,
-      (img) => {
-        img.set({ ...{ selectable }, ...rect });
+      (img: any) => {
+        img.set({
+          ...{ selectable, cornerRadius: 30, transparentCorners: true },
+          ...rect,
+        });
 
         if (selectable) {
           if (scale !== 1) {
             img.scaleToHeight(height * scale);
             img.scaleToWidth(width * scale);
           }
+
           canvas.add(img);
           if (autoFocus) {
             canvas.setActiveObject(img);
@@ -281,7 +317,6 @@ class ApiService {
     canvas.add(textbox);
     canvas.renderAll();
     canvas.setActiveObject(textbox);
-    console.log('addFont', textParams);
     changeStyle({ fill: defaultStyle.fill || '#333' });
   };
 
@@ -289,12 +324,11 @@ class ApiService {
     const rect = new fabric.Rect({
       left: 100,
       top: 100,
-      // fill: 'yellow',
       width: 400,
-      height: 100,
+      height: 300,
       objectCaching: false,
-      stroke: 'lightgreen',
-      strokeWidth: 4,
+      stroke: 'pink',
+      strokeWidth: 3,
       ...styles,
     });
 
@@ -334,21 +368,20 @@ class ApiService {
 
   changeStyle = (styles: NSArtboard.TextStyles = {}) => {
     const { canvas, getSelected, translateFontCss2Attribute } = this;
-    const text = getSelected();
+    const selected = getSelected();
 
-    if (text && text.set) {
+    if (selected && selected.set) {
       const styleAttr = translateFontCss2Attribute(styles);
 
       if (!styleAttr.shadow) {
         styleAttr.shadow = {};
       }
 
-      text.set(styleAttr);
-      console.log(111, styleAttr);
+      selected.set(styleAttr);
       canvas.renderAll();
       rx.next({
         type: 'object:modified',
-        data: text,
+        data: selected,
       });
     } else {
       return new Error('Please Select Text first!');
@@ -459,6 +492,7 @@ class ApiService {
     }
   };
 
+  // make the elements as a group
   markGroup = () => {
     const { canvas } = this;
     const active = canvas.getActiveObject();
@@ -468,6 +502,7 @@ class ApiService {
     }
   };
 
+  // ungroup the selected group element
   ungroup = () => {
     const { canvas } = this;
     const active = canvas.getActiveObject();
@@ -476,6 +511,7 @@ class ApiService {
     }
   };
 
+  // select element by id
   selectById = (id: string) => {
     const { canvas } = this;
     const objs = canvas.getObjects();
@@ -487,6 +523,7 @@ class ApiService {
     }
   };
 
+  // set element not selectable
   noSelect = () => {
     const { canvas } = this;
     const active = canvas.getActiveObject();
@@ -495,6 +532,7 @@ class ApiService {
     }
   };
 
+  // check the element is selectable
   canSelect = () => {
     const { canvas } = this;
     const active = canvas.getActiveObject();
@@ -503,16 +541,17 @@ class ApiService {
     }
   };
 
+  // update selected element props
   updateProps = (key: string, value: string | number | boolean) => {
     const { canvas } = this;
     const active = canvas.getActiveObject();
     if (active) {
       active.set(key, value);
       canvas.renderAll();
-      console.log('update', key, value);
     }
   };
 
+  // change layer zIndex
   moveDirOfZ = (dir: '-1' | '+1' | 'top' | 'bottom') => {
     const { canvas } = this;
     const active = canvas.getActiveObject();
@@ -532,6 +571,16 @@ class ApiService {
           canvas.sendToBack(active);
           break;
       }
+    }
+  };
+
+  // remove the selected element
+  removeSelected = () => {
+    const selected = this.getSelected();
+
+    if (selected) {
+      this.canvas.discardActiveObject();
+      this.canvas.remove(selected);
     }
   };
 }

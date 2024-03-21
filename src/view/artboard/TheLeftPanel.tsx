@@ -36,7 +36,7 @@ const { addImageFromURL, getCanvasRect, insertText, removeBackgroundImage, inser
 const dpr = getDPR();
 const tooltipsBackgroundColor = '#f54990';
 
-export default function LeftControl() {
+export default function TheLeftPanel() {
   const [visible, setVisible] = useState<boolean>(true);
 
   if (!visible) {
@@ -158,7 +158,11 @@ function Material() {
         position: {},
         scale: 1,
       }).catch((err: any) => {
-        console.log(err.message);
+        toast({
+          title: 'Error',
+          description: err.message || 'Fail To Add Image',
+          status: 'error',
+        });
       });
     });
   };

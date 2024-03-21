@@ -12,13 +12,13 @@ import { getDPR } from '../../common/client';
 import { useHotKey } from '../../hooks/useWindows';
 import useArtboardStore from '../../store/artboard';
 import CenterControl from './CenterControl';
-import api from './apiServices';
-import './index.scss';
-import LeftControl from './leftPanel';
-import fabric from './preset';
-import RightControl from './rightPanel';
 import MouseMenu from './MouseMenu';
+import LeftControl from './TheLeftPanel';
+import RightControl from './TheRightPanel';
+import api from './apiServices';
 import AdSense from './components/AdSense';
+import './index.scss';
+import fabric from './preset';
 
 const { addImageFromURL, setCanvas, updateCanvasRect } = api;
 const dpr = getDPR();
@@ -88,8 +88,13 @@ export default function Artboard() {
   useHotKey({
     keyDownCallback: (keyCode) => {
       // when press space, you can drag artboard to any postion
-      if (keyCode === 32) {
-        update({ dragDisabled: false });
+      switch (keyCode) {
+        case 32:
+          update({ dragDisabled: false });
+          break;
+        case 8:
+          api.removeSelected();
+          break;
       }
     },
     keyUpCallback: () => {

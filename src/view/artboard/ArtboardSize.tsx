@@ -34,7 +34,7 @@ const sizeTransform = (v: number | string = 0, type?: SizeTransformType) => {
   return parseInt(`${+v / dpr}`, 10);
 };
 
-export default function ResizeArtboard() {
+export default function ArtboardSize() {
   const { width, height, changeRect } = useArtboardStore();
   const toast = useTheToast();
 

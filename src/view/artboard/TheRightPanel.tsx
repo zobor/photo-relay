@@ -10,7 +10,7 @@ const params = {
   allowTouchMove: false, // 禁用手势滑动
 };
 
-export default function RightControl() {
+export default function TheRightPanel() {
   const [visible, setVisible] = useState<boolean>(true);
   const { rightPanelDetail } = useArtboardStore();
   const swiperRef = useRef<any>(null);

@@ -1,13 +1,22 @@
+import Icon from '@/components/Icon';
 import useArtboardStore from '@/store/artboard';
 import {
   Badge,
-  Box,
   Button,
   Center,
   Flex,
   Input,
   InputGroup,
   InputLeftAddon,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  RangeSlider,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+  RangeSliderTrack,
   Spinner,
   Text,
   Tooltip,
@@ -18,15 +27,14 @@ import { getLocalFonts } from '../../common/font';
 import usePhotoStore from '../../store/photo';
 import api from './apiServices';
 import colors, { palette } from './colors';
-import ResizeArtboard from './resizeArtboard';
-import Icon from '@/components/Icon';
+import ResizeArtboard from './ArtboardSize';
 const { changeTextOrShapeColor, changeStyle } = api;
 const marginTop = 2;
 const colorPickerStyles = { cursor: 'pointer', width: 24 };
 
 function Control(): any {
   const { fonts, setFonts, setFont, setColor } = usePhotoStore();
-  const { changeRightPanelDetail, layer } = useArtboardStore();
+  const { changeRightPanelDetail, layer, updateLayer } = useArtboardStore();
   const { type } = layer;
   const isText = type === 'i-text';
   const isImage = type === 'image';
@@ -92,11 +100,29 @@ function Control(): any {
         <Flex gap={2}>
           <InputGroup size={'xs'}>
             <InputLeftAddon children="width" />
-            <Input value={parseInt(`${layer.width}`, 10)} type="number" disabled />
+            <Input
+              defaultValue={parseInt(`${layer.width}`, 10)}
+              type="number"
+              onChange={(e: { target: HTMLInputElement }) => {
+                const width = +e.target.value;
+
+                updateLayer({ width });
+                api.changeStyle({ width });
+              }}
+            />
           </InputGroup>
           <InputGroup size={'xs'}>
             <InputLeftAddon children="height" />
-            <Input type="number" value={parseInt(`${layer.height}`, 10)} disabled />
+            <Input
+              type="number"
+              defaultValue={parseInt(`${layer.height}`, 10)}
+              onChange={(e: { target: HTMLInputElement }) => {
+                const height = +e.target.value;
+
+                updateLayer({ height });
+                api.changeStyle({ height });
+              }}
+            />
           </InputGroup>
         </Flex>
         <Flex gap={2}>
@@ -117,6 +143,12 @@ function Control(): any {
           <InputGroup size={'xs'}>
             <InputLeftAddon children="y" />
             <Input value={parseInt(`${layer.top}`, 10)} type="number" disabled />
+          </InputGroup>
+        </Flex>
+        <Flex>
+          <InputGroup size={'xs'}>
+            <InputLeftAddon children="opacity" />
+            <Input value={layer.opacity} type="text" disabled />
           </InputGroup>
         </Flex>
         {isText ? (
@@ -160,7 +192,7 @@ function Control(): any {
             <InputGroup size={'xs'}>
               <InputLeftAddon children="borderWidth" />
               <Input
-                value={layer.strokeWidth}
+                defaultValue={layer.strokeWidth}
                 type="number"
                 onInput={(e: any) => {
                   onChangeTextBorder({ borderWidth: +e.target.value });
@@ -174,9 +206,9 @@ function Control(): any {
           Layout
         </Text>
         <Flex gap={3}>
-          <Tooltip placement="top" hasArrow label="top" bg="gray.300" color="black">
+          <Tooltip placement="top" hasArrow label="left" bg="gray.300" color="black">
             <Text>
-              <Icon type="layout_top" onClick={() => api.setLayout('top')} />
+              <Icon type="layout_left" onClick={() => api.setLayout('left')} />
             </Text>
           </Tooltip>
           <Tooltip placement="top" hasArrow label="right" bg="gray.300" color="black">
@@ -184,14 +216,14 @@ function Control(): any {
               <Icon type="layout_right" onClick={() => api.setLayout('right')} />
             </Text>
           </Tooltip>
+          <Tooltip placement="top" hasArrow label="top" bg="gray.300" color="black">
+            <Text>
+              <Icon type="layout_top" onClick={() => api.setLayout('top')} />
+            </Text>
+          </Tooltip>
           <Tooltip placement="top" hasArrow label="bottom" bg="gray.300" color="black">
             <Text>
               <Icon type="layout_bottom" onClick={() => api.setLayout('bottom')} />
-            </Text>
-          </Tooltip>
-          <Tooltip placement="top" hasArrow label="left" bg="gray.300" color="black">
-            <Text>
-              <Icon type="layout_left" onClick={() => api.setLayout('left')} />
             </Text>
           </Tooltip>
           <Tooltip placement="top" hasArrow label="x center" bg="gray.300" color="black">
@@ -299,13 +331,14 @@ function Control(): any {
         {isText ? (
           <Flex alignItems={'center'} justifyContent={'space-between'} mt={marginTop}>
             <Text as="b" py={2} fontSize="xl">
-              Font Family
+              FontFamily
             </Text>
             <Badge cursor={'pointer'} colorScheme="purple" onClick={() => changeRightPanelDetail('fonts')}>
               more
             </Badge>
           </Flex>
         ) : undefined}
+
         {isText ? fonts.length ? null : <Spinner /> : null}
         {isText && fonts.length ? (
           <Flex gap={2} flexWrap="wrap">
@@ -326,6 +359,52 @@ function Control(): any {
                   {font}
                 </Button>
               ))}
+          </Flex>
+        ) : null}
+
+        {isText || isImage ? (
+          <Flex direction={'column'}>
+            <Text as="b" fontSize="xl" mb={2}>
+              Opacity
+            </Text>
+            <RangeSlider
+              colorScheme="pink"
+              min={1}
+              max={10}
+              step={1}
+              defaultValue={[layer.opacity ? layer.opacity * 10 : 10]}
+              onChange={([v]: number[]) => {
+                api.changeStyle({ opacity: +v / 10 });
+              }}
+            >
+              <RangeSliderTrack>
+                <RangeSliderFilledTrack bg="tomato" />
+              </RangeSliderTrack>
+              <RangeSliderThumb index={0} />
+            </RangeSlider>
+          </Flex>
+        ) : null}
+
+        {isText ? (
+          <Flex direction={'column'}>
+            <Text as="b" fontSize="xl" mb={2}>
+              Font Weight
+            </Text>
+            <RangeSlider
+              colorScheme="pink"
+              min={100}
+              max={900}
+              step={100}
+              defaultValue={[layer.fontSize || 400]}
+              onChange={([v]: number[]) => {
+                api.changeStyle({ fontWeight: v });
+              }}
+            >
+              <RangeSliderTrack>
+                <RangeSliderFilledTrack bg="tomato" />
+              </RangeSliderTrack>
+              <RangeSliderThumb index={0} />
+            </RangeSlider>
           </Flex>
         ) : null}
 
@@ -366,7 +445,12 @@ function Control(): any {
                     changeStyle({ borderColor: e.target.value });
                   }}
                 />
-                <Badge ml={4} cursor={'pointer'} colorScheme="purple" onClick={() => changeRightPanelDetail('colors')}>
+                <Badge
+                  ml={4}
+                  cursor={'pointer'}
+                  colorScheme="purple"
+                  onClick={() => changeRightPanelDetail('borderColors')}
+                >
                   more
                 </Badge>
               </Flex>
@@ -387,6 +471,7 @@ function Control(): any {
             </Badge>
           </Flex>
         ) : null}
+
         {isImageCanBeColored ? (
           <Flex flexWrap="wrap" gap={1}>
             {palette.slice(0, 5).map((item, idx) => (
@@ -406,6 +491,35 @@ function Control(): any {
             ))}
           </Flex>
         ) : null}
+
+        {isRect || isImage ? (
+          <Flex direction={'column'}>
+            <Text as="b" fontSize="xl">
+              Border Radius
+            </Text>
+            <InputGroup>
+              <InputLeftAddon children="Border Radius" />
+              <NumberInput
+                defaultValue={layer.rx}
+                onChange={(v) => {
+                  const radius = +v;
+                  if (isImage) {
+                    api.changeStyle({ cornerRadius: radius });
+                  } else if (isRect) {
+                    api.changeStyle({ rx: radius, ry: radius });
+                  }
+                }}
+              >
+                <NumberInputField borderLeftRadius={0} />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </InputGroup>
+          </Flex>
+        ) : null}
+
         {isGroup ? undefined : (
           <Flex alignItems={'center'} justifyContent={'space-between'} mt={marginTop} py={2}>
             <Text as="b" fontSize="xl">
@@ -416,6 +530,7 @@ function Control(): any {
             </Badge>
           </Flex>
         )}
+
         {isGroup ? undefined : (
           <Flex flexWrap="wrap" gap={1}>
             {colors.slice(0, 16).map((color) => (

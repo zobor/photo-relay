@@ -1,6 +1,4 @@
 import {
-  Badge,
-  Flex,
   Image,
   Modal,
   ModalBody,
@@ -35,7 +33,13 @@ export default function ModalPhotos() {
           position: {},
           scale: 1,
         }).catch((err: any) => {
-          console.log(err.message || 'Fail To Load Resource');
+          toast({
+            title: 'Error',
+            description: err.message || 'Fail To Load Resource',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+          });
         });
         toast({
           title: 'Image created.',

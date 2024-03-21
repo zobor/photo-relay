@@ -30,8 +30,8 @@ export default function CenterControl() {
     addOneImage(str);
     updateStep(2);
   };
-  const zoomIn = () => update({ scale: scale + 1 });
-  const zoomOut = () => update({ scale: scale - 1 });
+  const zoomIn = () => update({ scale: scale + 5 });
+  const zoomOut = () => update({ scale: scale - 5 });
   const updateScale = (scale: number) => update({ scale });
 
   useEffect(() => {

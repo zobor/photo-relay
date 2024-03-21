@@ -143,6 +143,7 @@ export default class Template {
             fill: 'rgb(24, 72, 92)',
             stroke: 'rgb(205, 158, 77)',
             width: 500,
+            height: 100,
             left: 100,
             top: 744,
             strokeWidth: 1,
@@ -196,16 +197,6 @@ export default class Template {
 
   run = async (id: number) => {
     const tasks: any = this.data(id);
-    // tasks.forEach(async (task: any) => {
-    //   const fn = (this as any)[task.type] || (this as any).api[task.type];
-
-    //   if (fn.constructor.name === 'AsyncFunction') {
-    //     await fn(task.props);
-    //   } else {
-    //     fn(task.props);
-    //   }
-    //   (this as any).api.unSelectAll();
-    // });
 
     for (const task of tasks) {
       const fn = (this as any)[task.type] || (this as any).api[task.type];
@@ -215,7 +206,7 @@ export default class Template {
       } else {
         fn(task.props);
       }
-      // await this.delay(300);
+      await this.delay(100);
       (this as any).api.unSelectAll();
     }
   };
