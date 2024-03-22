@@ -106,6 +106,24 @@ export function dataURLtoFile(dataurl: string, filename: string): File {
   return new File([u8arr], filename, { type: mime });
 }
 
+export function downloadText(text: string, fileName?: string): void {
+  const dataURL = `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`;
+  const a = document.createElement('a') as HTMLAnchorElement;
+  const filename = fileName || `s_${+new Date()}.md`;
+
+  a.href = dataURL;
+  a.download = filename;
+  a.textContent = 'downloading...';
+  a.style.display = 'none';
+
+  document.body.appendChild(a);
+
+  setTimeout(() => {
+    a.click();
+    document.body.removeChild(a);
+  }, 66);
+}
+
 export function fetchText(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
     fetch(url)
@@ -134,4 +152,21 @@ export function getImageRect(url: string): Promise<{ width: number; height: numb
 
 export function svgCodeToDataURL(svgCode: string): string {
   return `data:image/svg+xml,${encodeURIComponent(svgCode)}`;
+}
+
+export const regxOfMatchSvgFillValue = /fill="[^"]+"/gi;
+
+export function updateStringFillColorByIndex(svgCode: string, targetIndex: number, color: string) {
+  const text = svgCode;
+  let index = 0;
+  const newText = text.replace(regxOfMatchSvgFillValue, function (a: string, b: string) {
+    let str = a;
+    if (index === targetIndex) {
+      str = `fill="${color}"`;
+    }
+    index += 1;
+    return str;
+  });
+
+  return newText;
 }

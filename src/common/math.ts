@@ -23,3 +23,23 @@ export function getCurrentDate(): string {
 
   return `${year}-${formattedMonth}-${formattedDay}`;
 }
+
+export function rgbaToHex(rgba: string): string {
+  const values: any = rgba.replace(/[\sa-z()]/ig, '').split(',');
+
+  if (values.length < 3 || values.length > 4) {
+    throw new Error('Invalid rgba value: ' + rgba);
+  }
+
+  const hex =
+    '#' +
+    values
+      .slice(0, 3)
+      .map((value: string) => {
+        const hexValue = parseInt(value, 10).toString(16);
+        return hexValue.length === 1 ? '0' + hexValue : hexValue;
+      })
+      .join('');
+
+  return hex;
+}

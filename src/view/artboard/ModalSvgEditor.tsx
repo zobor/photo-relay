@@ -1,4 +1,4 @@
-import { svgCodeToDataURL } from '@/common/file';
+import { downloadText, regxOfMatchSvgFillValue, svgCodeToDataURL, updateStringFillColorByIndex } from '@/common/file';
 import Icon from '@/components/Icon';
 import {
   Box,
@@ -15,16 +15,42 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { getRandString, rgbaToHex } from '../../common/math';
 import api from './apiServices';
 
 function xss(s: string) {
-  return s.replace(/class="[^"]+"/g, '');
+  return s.replace(/class="[^"]+"/g, '').replace(/<script/gi, '');
 }
 
 export default function ModalSvgEditor({ children, containerStyle }: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [text, setText] = useState<string>('');
+  const colors = useMemo(() => {
+    const list = text.match(regxOfMatchSvgFillValue);
+    if (list?.length) {
+      const colorList = list.map((item: string, index: number) => {
+        let color = item.replace(/fill="/, '').replace('"', '');
+        if (color.includes('rgb')) {
+          color = rgbaToHex(color);
+        }
+        return {
+          color,
+          index,
+        };
+      });
+      return colorList;
+    }
+    return [];
+  }, [text]);
+  const onChangeColor = useCallback(
+    (index: number, color: string) => {
+      const newText = updateStringFillColorByIndex(text, index, color);
+      setText(newText);
+    },
+    [text],
+  );
+
   return (
     <>
       <div style={containerStyle} onClick={onOpen}>
@@ -60,6 +86,21 @@ export default function ModalSvgEditor({ children, containerStyle }: any) {
                 }}
               />
             </Box>
+
+            <Flex flexDirection={'row'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'center'}>
+              {colors.map(({ color, index }) => (
+                <input
+                  type="color"
+                  defaultValue={color}
+                  key={`colors-index-${index}`}
+                  style={{ width: 27 }}
+                  onChange={(e: { target: HTMLInputElement }) => {
+                    onChangeColor(index, e.target.value);
+                  }}
+                />
+              ))}
+            </Flex>
+
             <Flex w={'100%'} mt={2}>
               <Button
                 w="100%"
@@ -77,6 +118,21 @@ export default function ModalSvgEditor({ children, containerStyle }: any) {
               >
                 <Icon fill="#FFF" type="add" />
                 <Text ml={2}>Insert To Artboard</Text>
+              </Button>
+            </Flex>
+            <Flex w={'100%'} mt={2}>
+              <Button
+                w="100%"
+                colorScheme="purple"
+                disabled={isEmpty(text)}
+                onClick={() => {
+                  if (!isEmpty(text)) {
+                    downloadText(text, `${getRandString()}.svg`);
+                  }
+                }}
+              >
+                <Icon fill="#FFF" type="download" />
+                <Text ml={2}>Download The SVG</Text>
               </Button>
             </Flex>
           </ModalBody>
