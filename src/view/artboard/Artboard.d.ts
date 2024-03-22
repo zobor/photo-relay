@@ -25,6 +25,7 @@ namespace NSArtboard {
     rx?: number;
     ry?: number;
     cornerRadius?: number;
+    textAlign?: string;
   };
 
   type Dir = 'top' | 'right' | 'bottom' | 'left' | 'center' | 'x-center' | 'y-center';

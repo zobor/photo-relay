@@ -28,7 +28,7 @@ export function rgbaToHex(rgba: string): string {
   const values: any = rgba.replace(/[\sa-z()]/ig, '').split(',');
 
   if (values.length < 3 || values.length > 4) {
-    throw new Error('Invalid rgba value: ' + rgba);
+    return '';
   }
 
   const hex =

@@ -35,6 +35,7 @@ type Layer = {
   underline?: boolean;
   overline?: boolean;
   linethrough?: boolean;
+  textAlign?: string;
 };
 
 interface ArtboardState {

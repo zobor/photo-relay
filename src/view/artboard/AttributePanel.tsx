@@ -28,9 +28,12 @@ import usePhotoStore from '../../store/photo';
 import api from './apiServices';
 import colors, { palette } from './colors';
 import ResizeArtboard from './ArtboardSize';
+import { rgbaToHex } from '../../common/math';
+
 const { changeTextOrShapeColor, changeStyle } = api;
 const marginTop = 2;
 const colorPickerStyles = { cursor: 'pointer', width: 24 };
+const activeColor = '#3498db';
 
 function Control(): any {
   const { fonts, setFonts, setFont, setColor } = usePhotoStore();
@@ -268,7 +271,7 @@ function Control(): any {
             <Text
               as="i"
               cursor={'pointer'}
-              color={layer.fontStyle === 'italic' ? 'rgb(52, 152, 219)' : ''}
+              color={layer.fontStyle === 'italic' ? activeColor : ''}
               onClick={() => {
                 api.changeStyle({
                   fontStyle: layer.fontStyle === 'italic' ? 'normal' : 'italic',
@@ -280,7 +283,7 @@ function Control(): any {
             <Text
               as="b"
               cursor={'pointer'}
-              color={layer.fontWeight === 'bold' ? 'rgb(52, 152, 219)' : ''}
+              color={layer.fontWeight === 'bold' ? activeColor : ''}
               onClick={() => {
                 api.changeStyle({
                   fontWeight: layer.fontWeight === 'bold' ? 'normal' : 'bold',
@@ -292,7 +295,7 @@ function Control(): any {
             <Text
               cursor={'pointer'}
               textDecoration={'underline'}
-              color={layer.underline ? 'rgb(52, 152, 219)' : ''}
+              color={layer.underline ? activeColor : ''}
               onClick={() => {
                 api.changeStyle({
                   underline: !layer.underline,
@@ -304,7 +307,7 @@ function Control(): any {
             <Text
               cursor={'pointer'}
               textDecoration={'overline'}
-              color={layer.overline ? 'rgb(52, 152, 219)' : ''}
+              color={layer.overline ? activeColor : ''}
               onClick={() => {
                 api.changeStyle({
                   overline: !layer.overline,
@@ -316,7 +319,7 @@ function Control(): any {
             <Text
               cursor={'pointer'}
               textDecoration={'line-through'}
-              color={layer.linethrough ? 'rgb(52, 152, 219)' : ''}
+              color={layer.linethrough ? activeColor : ''}
               onClick={() => {
                 api.changeStyle({
                   linethrough: !layer.linethrough,
@@ -325,6 +328,56 @@ function Control(): any {
             >
               Aa
             </Text>
+          </Flex>
+        ) : undefined}
+
+        {isText ? (
+          <Text as="b" py={2} fontSize="xl" mt={marginTop}>
+            Text Align
+          </Text>
+        ) : undefined}
+        {isText ? (
+          <Flex gap={4} fontSize={25}>
+            <Icon
+              type="text_align_left"
+              size={30}
+              fill={layer.textAlign === 'left' ? activeColor : '#000000'}
+              onClick={() => {
+                api.changeStyle({
+                  textAlign: 'left',
+                });
+              }}
+            />
+            <Icon
+              type="text_align_center"
+              size={30}
+              fill={layer.textAlign === 'center' ? activeColor : '#000000'}
+              onClick={() => {
+                api.changeStyle({
+                  textAlign: 'center',
+                });
+              }}
+            />
+            <Icon
+              type="text_align_right"
+              size={30}
+              fill={layer.textAlign === 'right' ? activeColor : '#000000'}
+              onClick={() => {
+                api.changeStyle({
+                  textAlign: 'right',
+                });
+              }}
+            />
+            <Icon
+              type="text_align_justify"
+              size={30}
+              fill={layer.textAlign === 'justify' ? activeColor : '#000000'}
+              onClick={() => {
+                api.changeStyle({
+                  textAlign: 'justify',
+                });
+              }}
+            />
           </Flex>
         ) : undefined}
 
@@ -368,6 +421,7 @@ function Control(): any {
               Opacity
             </Text>
             <RangeSlider
+              w={'95%'}
               colorScheme="pink"
               min={1}
               max={10}
@@ -392,6 +446,7 @@ function Control(): any {
             </Text>
             <RangeSlider
               colorScheme="pink"
+              w={'95%'}
               min={100}
               max={900}
               step={100}
@@ -417,7 +472,7 @@ function Control(): any {
               <Flex direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
                 <input
                   type="color"
-                  defaultValue={layer.fill}
+                  value={rgbaToHex(layer.fill || '')}
                   style={colorPickerStyles}
                   onChange={(e) => {
                     changeTextColor(e.target.value);
@@ -439,7 +494,7 @@ function Control(): any {
               <Flex direction={'row'} alignItems={'center'}>
                 <input
                   type="color"
-                  defaultValue={layer.stroke}
+                  value={rgbaToHex(layer.stroke || '')}
                   style={colorPickerStyles}
                   onChange={(e) => {
                     changeStyle({ borderColor: e.target.value });
@@ -471,7 +526,6 @@ function Control(): any {
             </Badge>
           </Flex>
         ) : null}
-
         {isImageCanBeColored ? (
           <Flex flexWrap="wrap" gap={1}>
             {palette.slice(0, 5).map((item, idx) => (
@@ -492,7 +546,7 @@ function Control(): any {
           </Flex>
         ) : null}
 
-        {isRect || isImage ? (
+        {isRect ? (
           <Flex direction={'column'}>
             <Text as="b" fontSize="xl">
               Border Radius
