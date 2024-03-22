@@ -50,8 +50,8 @@ export default function ArtboardSize() {
     }
   };
   const onChangeColor = useCallback(
-    debounce((e: any) => {
-      api.setBackgroundColor({ color: e.target.value });
+    debounce((color: string) => {
+      api.setBackgroundColor({ color });
     }, 300),
     [],
   );
@@ -144,8 +144,43 @@ export default function ArtboardSize() {
       <Text fontSize="l" as="b">
         Background Color
       </Text>
-      <Flex>
-        <input type="color" style={{ width: 24 }} onChange={onChangeColor} />
+      <Flex gap={2}>
+        <input
+          defaultValue="#FFFFFF"
+          type="color"
+          style={{ width: 24 }}
+          onChange={(e: any) => onChangeColor(e.target.value)}
+        />
+        <div
+          style={{ width: 24, backgroundColor: '#FFFFFF' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#FFFFFF')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#CCCCCC' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#CCCCCC')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#f7dc6f' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#f7dc6f')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#aed6f1' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#aed6f1')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#B366BC' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#B366BC')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#333333' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#333333')}
+        ></div>
       </Flex>
     </div>
   );
