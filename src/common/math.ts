@@ -25,6 +25,9 @@ export function getCurrentDate(): string {
 }
 
 export function rgbaToHex(rgba: string): string {
+  if (typeof rgba !== 'string') {
+    return '';
+  }
   const values: any = rgba.replace(/[\sa-z()]/ig, '').split(',');
 
   if (values.length < 3 || values.length > 4) {

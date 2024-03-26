@@ -2,7 +2,6 @@ import { moveCenter } from '@/common/dom';
 import { useResize } from '@/hooks/useWindows';
 import {
   Badge,
-  Button,
   Flex,
   Input,
   InputGroup,
@@ -14,13 +13,14 @@ import {
   NumberInputStepper,
   Text,
 } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { useCallback, useState } from 'react';
 import { PaperSizes, getDPR, getPaperSize, paperSizes } from '../../common/client';
 import { isError } from '../../common/is';
 import { useTheToast } from '../../hooks/useUi';
 import useArtboardStore from '../../store/artboard';
-import { debounce } from 'lodash';
 import api from './apiServices';
+import config from './config';
 
 const dpr = getDPR();
 enum SizeTransformType {
@@ -37,6 +37,8 @@ const sizeTransform = (v: number | string = 0, type?: SizeTransformType) => {
 export default function ArtboardSize() {
   const { width, height, changeRect } = useArtboardStore();
   const toast = useTheToast();
+  const [gradientStart, setGradientStart] = useState('');
+  const [gradientEnd, setGradientEnd] = useState('');
 
   useResize(moveCenter);
   const onClickSizeScheme = (size: keyof PaperSizes) => {
@@ -181,6 +183,57 @@ export default function ArtboardSize() {
           className="artboardPresetColors"
           onClick={() => onChangeColor('#333333')}
         ></div>
+      </Flex>
+      <Text fontSize="l" as="b">
+        Background Gradient
+      </Text>
+      <Flex flexDirection={'column'} gap={1}>
+        {config.liearGradient.map(([start, end]) => (
+          <div
+            style={{
+              width: '100%',
+              background: `linear-gradient(to right, ${start}, ${end})`,
+              height: 30,
+              cursor: 'pointer',
+              borderRadius: 3,
+            }}
+            key={`${start}-${end}`}
+            onClick={() => api.setBackgroundColorGradient({ startColor: start, endColor: end })}
+          />
+        ))}
+      </Flex>
+
+      <Text fontSize="l" as="b">
+        Select Gradient Colors
+      </Text>
+      <Flex justifyContent={'space-between'}>
+        <input
+          type="color"
+          value={gradientStart}
+          style={{ flex: 1 }}
+          onChange={(e: any) => {
+            setGradientStart(e.target.value);
+            Promise.resolve().then(() => {
+              if (gradientStart && gradientEnd) {
+                api.setBackgroundColorGradient({ startColor: gradientStart, endColor: gradientEnd });
+              }
+            });
+          }}
+        />
+        <span>～</span>
+        <input
+          type="color"
+          value={gradientEnd}
+          style={{ flex: 1 }}
+          onChange={(e: any) => {
+            setGradientEnd(e.target.value);
+            Promise.resolve().then(() => {
+              if (gradientStart && gradientEnd) {
+                api.setBackgroundColorGradient({ startColor: gradientStart, endColor: gradientEnd });
+              }
+            });
+          }}
+        />
       </Flex>
     </div>
   );

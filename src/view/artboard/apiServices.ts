@@ -157,6 +157,23 @@ class ApiService {
     canvas.renderAll();
   };
 
+  setBackgroundColorGradient = ({ startColor, endColor }: { startColor: string; endColor: string }) => {
+    const { canvas } = this;
+    const gradient = new fabric.Gradient({
+      type: 'linear',
+      offsetX: 0,
+      offsetY: 0,
+      coords: { x1: 0, y1: canvas.height, x2: canvas.width, y2: canvas.height },
+      colorStops: [
+        { color: startColor, offset: 0 },
+        { color: endColor, offset: 1 },
+      ],
+    });
+
+    canvas.setBackgroundColor(gradient);
+    canvas.renderAll();
+  };
+
   getCanvasRect = () => {
     const { canvas } = this;
     const el = canvas.lowerCanvasEl;
