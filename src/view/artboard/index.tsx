@@ -114,8 +114,7 @@ export default function Artboard() {
     <div className="artboard">
       <LeftControl />
       <Scrollbars>
-        {/* <Box w={'1000vw'} h={'1000vh'}> */}
-        <Box>
+        <Box w={'600vw'} h={'600vh'}>
           <Draggable position={position} onDrag={handleDrag} disabled={dragDisabled}>
             <Box position={'relative'}>
               <canvas id="artboard" />
