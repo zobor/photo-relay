@@ -2,7 +2,7 @@ $boxShadow: 0 1px 2px 0 rgba(0,0,0,.06), 0 6px 12px 0 rgba(0,0,0,.08);
 $asideWidth: 250px;
 
 .artboard {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -13,6 +13,7 @@ $asideWidth: 250px;
   .canvas-container {
     background-color: #fff;
     transition: all .6s ease-in-out;
+    overflow: hidden;
   }
 
   .leftPanel {

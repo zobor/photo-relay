@@ -32,12 +32,17 @@ export default function CenterControl() {
   };
   const zoomIn = () => update({ scale: scale + 5 });
   const zoomOut = () => update({ scale: scale - 5 });
-  const updateScale = (scale: number) => update({ scale });
+  const updateScale = (scale: number) => {
+    update({ scale });
+    Promise.resolve().then(() => {
+      moveCenter();
+    });
+  };
 
   useEffect(() => {
     const el: any = document.querySelector('#artboard');
     if (el) {
-      el.parentNode.style.scale = scale / 100;
+      el.parentNode.parentNode.parentNode.style.scale = scale / 100;
     }
   }, [scale]);
 
@@ -79,6 +84,7 @@ export default function CenterControl() {
               {scale}%
             </MenuButton>
             <MenuList style={{ transform: 'translateX(-30px)' }}>
+              <MenuItem onClick={() => updateScale(20)}>20%</MenuItem>
               <MenuItem onClick={() => updateScale(30)}>30%</MenuItem>
               <MenuItem onClick={() => updateScale(50)}>50%</MenuItem>
               <MenuItem onClick={() => updateScale(80)}>80%</MenuItem>

@@ -7,7 +7,7 @@ export function getDPI(): number {
 }
 
 export type PaperSizes = {
-  [key in 'A1' | 'A2' | 'A3' | 'A4' | 'POSTER']: {
+  [key in 'A1' | 'A2' | 'A3' | 'A4' | 'POSTER' | '4K']: {
     width: number;
     height: number;
   };
@@ -19,6 +19,7 @@ export const paperSizes: PaperSizes = {
   A3: { width: 11.7, height: 16.5 },
   A4: { width: 8.3, height: 11.7 },
   POSTER: { width: 8.33, height: 5.42 },
+  '4K': { width: 40, height: 22.5 },
 };
 
 export function getPaperSize(size: keyof PaperSizes): { width: number; height: number } | Error {
