@@ -3,7 +3,6 @@ export default {
     color: '#f00',
     fontWeight: 'bold',
     fontSize: 60,
-    fontFamily: 'Cascadia Code',
   },
   liearGradient: [
     ['#fe982e', '#b3005d'],

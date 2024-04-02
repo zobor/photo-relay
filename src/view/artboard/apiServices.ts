@@ -2,11 +2,12 @@ import { rx } from '@/common/rx';
 import { getDPR } from '../../common/client.js';
 import { fetchText } from '../../common/file.js';
 import { isImage, isObject } from '../../common/is.js';
-import { getRandString } from '../../common/math.js';
+import { getRandString, removeUndefined } from '../../common/math.js';
 import { imagePrefix } from './Constant.js';
 import config from './config.js';
 import fabric from './preset.js';
-import _ from 'lodash';
+import _, { get } from 'lodash';
+import { localFont } from '../../common/font.js';
 
 const dpr = getDPR();
 
@@ -297,9 +298,9 @@ class ApiService {
       width: 150,
     };
 
-    const textParams = {
-      id: getRandString(),
-      ...{
+    const textParams = Object.assign(
+      {
+        id: getRandString(),
         left: 0,
         top: 10,
         fontSize: 60,
@@ -307,10 +308,11 @@ class ApiService {
         fill: '#333',
         charSpacing: 0,
         paintFirst: 'stroke',
+        fontFamily: get(localFont, 'list', []).filter((font) => font.length < 15)[0] || '',
       },
-      ...rect,
-      ...defaultStyle,
-    };
+      rect,
+      removeUndefined(defaultStyle),
+    );
 
     const textbox: any = new fabric.IText(text, textParams as any);
 

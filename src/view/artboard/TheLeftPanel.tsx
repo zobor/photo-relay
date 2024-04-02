@@ -102,7 +102,7 @@ function Material() {
       defaultStyle: {
         ...config.textStyle,
         fill: color,
-        fontFamily: font || '',
+        fontFamily: font || undefined,
       },
     });
   }, []);

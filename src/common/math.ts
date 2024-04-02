@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export function rand(min: number, max: number): number {
   return parseInt(`${Math.random() * (max - min + 1) + min}`, 10);
 }
@@ -45,4 +47,8 @@ export function rgbaToHex(rgba: string): string {
       .join('');
 
   return hex;
+}
+
+export function removeUndefined(data: Record<string, any>) {
+  return _.omitBy(data, _.isNil);
 }
