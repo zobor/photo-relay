@@ -100,6 +100,21 @@ export default function Artboard() {
             api.removeSelected();
           }
           break;
+        case 88:
+          if (api.getSelectedType() === 'image') {
+            api.setLayout('x-center');
+            break;
+          }
+        case 89:
+          if (api.getSelectedType() === 'image') {
+            api.setLayout('y-center');
+            break;
+          }
+        case 67:
+          if (api.getSelectedType() === 'image') {
+            api.setLayout('center');
+            break;
+          }
       }
     },
     keyUpCallback: (e?: React.KeyboardEvent) => {
