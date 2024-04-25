@@ -33,6 +33,7 @@ import config from './config';
 import icons from './icons';
 import Template from './template';
 import ModalSvgEditor from './ModalSvgEditor';
+import { fetchSVG } from '../../common/dom';
 
 const { addImageFromURL, getCanvasRect, insertText, removeBackgroundImage, insertRect } = api;
 const dpr = getDPR();
@@ -111,12 +112,14 @@ function Material() {
   }, []);
   const onClickAddSVG = useCallback(() => {}, []);
   const onClickShape = (url: string) => {
-    addImageFromURL({
-      url,
-      selectable: true,
-      position: {},
-    }).catch((err: any) => {
-      toast(err.message);
+    fetchSVG(url).then((dataURL: string) => {
+      addImageFromURL({
+        url: dataURL,
+        selectable: true,
+        position: {},
+      }).catch((err: any) => {
+        toast(err.message);
+      });
     });
   };
   const onUploadBackgroundImage = (dataURLs: string[]) => {
@@ -185,27 +188,27 @@ function Material() {
         </Text>
         <Flex direction={'column'} gap={1}>
           <Button onClick={onClickAddText} colorScheme="purple">
-            <Center gap={2}>
+            <Flex gap={2} justifyContent={'flex-start'} flex={1}>
               <Icon type="add" fill="#fff" />
               <span>New Text</span>
-            </Center>
+            </Flex>
           </Button>
-          <Button onClick={onClickAddRect} colorScheme="purple">
-            <Center gap={2}>
+          <Button onClick={onClickAddRect} colorScheme="facebook">
+            <Flex gap={2} justifyContent={'flex-start'} flex={1}>
               <Icon type="add" fill="#fff" />
               <span>New Rectangle</span>
-            </Center>
+            </Flex>
           </Button>
           <ModalSvgEditor
             containerStyle={{
               display: 'flex',
             }}
           >
-            <Button flex={1} onClick={onClickAddSVG} colorScheme="purple">
-              <Center gap={2}>
+            <Button flex={1} onClick={onClickAddSVG} colorScheme="linkedin">
+              <Flex gap={2} justifyContent={'flex-start'} flex={1}>
                 <Icon type="add" fill="#fff" />
-                <span>SVG</span>
-              </Center>
+                <span>Insert SVG Code</span>
+              </Flex>
             </Button>
           </ModalSvgEditor>
         </Flex>

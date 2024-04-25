@@ -19,6 +19,10 @@ import { useEffect } from 'react';
 import api from './apiServices';
 
 const { addImageFromURL } = api;
+const iframeStyle = {
+  width: 800,
+  height: 600,
+};
 
 export default function ShowMoreShapes() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,6 +55,7 @@ export default function ShowMoreShapes() {
           duration: 2000,
           isClosable: true,
         });
+        onClose();
       }
     };
     window.addEventListener('message', onmessage, false);
@@ -69,7 +74,7 @@ export default function ShowMoreShapes() {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent width={iframeStyle.width + 100} maxWidth={iframeStyle.width + 100}>
           <ModalHeader>Shapes</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -79,54 +84,32 @@ export default function ShowMoreShapes() {
                 <Tab>Shop</Tab>
                 <Tab>Logo</Tab>
                 <Tab>Weather</Tab>
-                <Tab>Logo</Tab>
+                <Tab>Objects</Tab>
+                <Tab>Cartoon</Tab>
+                <Tab>Tech</Tab>
               </TabList>
 
               <TabPanels>
                 <TabPanel>
-                  <iframe
-                    src="https://www.duelpeak.com/pages/icons/index.html?tab=1&total=1589"
-                    style={{
-                      width: 400,
-                      height: 400,
-                    }}
-                  />
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=1&total=991" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe
-                    src="https://www.duelpeak.com/pages/icons/index.html?tab=2&total=20"
-                    style={{
-                      width: 400,
-                      height: 400,
-                    }}
-                  />
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=2&total=20" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe
-                    src="https://www.duelpeak.com/pages/icons/index.html?tab=3&total=44"
-                    style={{
-                      width: 400,
-                      height: 400,
-                    }}
-                  />
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=3&total=164" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe
-                    src="https://www.duelpeak.com/pages/icons/index.html?tab=4&total=22"
-                    style={{
-                      width: 400,
-                      height: 400,
-                    }}
-                  />
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=4&total=113" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe
-                    src="https://www.duelpeak.com/pages/icons/index.html?tab=5&total=120"
-                    style={{
-                      width: 400,
-                      height: 400,
-                    }}
-                  />
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=5&total=75" style={iframeStyle} />
+                </TabPanel>
+                <TabPanel>
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=6&total=100" style={iframeStyle} />
+                </TabPanel>
+                <TabPanel>
+                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=7&total=204" style={iframeStyle} />
                 </TabPanel>
               </TabPanels>
             </Tabs>

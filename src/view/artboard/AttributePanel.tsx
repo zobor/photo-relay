@@ -29,6 +29,7 @@ import api from './apiServices';
 import colors, { palette } from './colors';
 import ResizeArtboard from './ArtboardSize';
 import { rgbaToHex } from '../../common/math';
+import { copy } from '../../common/dom';
 
 const { changeTextOrShapeColor, changeStyle } = api;
 const marginTop = 2;
@@ -55,6 +56,7 @@ function Control(): any {
   };
 
   const onFontChange = (value: string) => {
+    copy(value);
     setFont(value);
     changeStyle({
       fontFamily: value,

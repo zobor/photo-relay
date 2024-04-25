@@ -83,37 +83,6 @@ class ApiService {
       }
     }
 
-    // if (borderRadius) {
-    //   const rectBox = new fabric.Rect({
-    //     ...rect,
-    //     ...{
-    //       rx: borderRadius,
-    //       ry: borderRadius,
-    //       fill: 'red',
-    //     },
-    //   });
-    //   // canvas.add(rectBox);
-
-    //   // fabric.Image.fromURL(image.src, (img: any) => {
-    //   //   // rectBox.set('clipPath', img);
-    //   //   // console.log(img);
-    //   //   img.set({
-    //   //     clipTo: function (ctx: any) {
-    //   //       // return clipBySlot(ctx, image, rectBox);
-    //   //     },
-    //   //   });
-    //   //   canvas.add(img);
-    //   //   canvas.renderAll();
-    //   // });
-
-    //   canvas.renderAll();
-    //   return;
-    // }
-
-    // if (borderRadius) {
-
-    // }
-
     fabric.Image.fromURL(
       image.src,
       (img: any) => {
