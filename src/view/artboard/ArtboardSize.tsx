@@ -187,18 +187,18 @@ export default function ArtboardSize() {
       <Text fontSize="l" as="b">
         Background Gradient
       </Text>
-      <Flex flexDirection={'column'} gap={1}>
+      <Flex flexDirection={'row'} gap={1} flexWrap={'wrap'}>
         {config.liearGradient.map(([start, end]) => (
           <div
             style={{
-              width: '100%',
-              background: `linear-gradient(to right, ${start}, ${end})`,
+              width: '17%',
+              background: `linear-gradient(to right, #${start}, #${end})`,
               height: 30,
               cursor: 'pointer',
               borderRadius: 3,
             }}
             key={`${start}-${end}`}
-            onClick={() => api.setBackgroundColorGradient({ startColor: start, endColor: end })}
+            onClick={() => api.setBackgroundColorGradient({ startColor: `#${start}`, endColor: `#${end}` })}
           />
         ))}
       </Flex>
