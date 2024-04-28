@@ -52,3 +52,18 @@ export function rgbaToHex(rgba: string): string {
 export function removeUndefined(data: Record<string, any>) {
   return _.omitBy(data, _.isNil);
 }
+
+export function sortArray(arr1: any[], arr2: any[]) {
+  const arr1Map = new Map(arr1.map((item: string) => [item, true]));
+  const combinedArr = arr1.concat(arr2);
+  combinedArr.sort((a, b) => {
+    if (arr1Map.has(a) && !arr1Map.has(b)) {
+      return -1;
+    } else if (!arr1Map.has(a) && arr1Map.has(b)) {
+      return 1;
+    } else {
+      return a - b;
+    }
+  });
+  return combinedArr;
+}

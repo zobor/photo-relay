@@ -28,8 +28,9 @@ import usePhotoStore from '../../store/photo';
 import api from './apiServices';
 import colors, { palette } from './colors';
 import ResizeArtboard from './ArtboardSize';
-import { rgbaToHex } from '../../common/math';
+import { rgbaToHex, sortArray } from '../../common/math';
 import { copy } from '../../common/dom';
+import config from './config';
 
 const { changeTextOrShapeColor, changeStyle } = api;
 const marginTop = 2;
@@ -50,7 +51,7 @@ function Control(): any {
   const fetchLocalFonts = () => {
     getLocalFonts().then((rs) => {
       if (Array.isArray(rs) && rs.length) {
-        setFonts(rs);
+        setFonts(sortArray(config.someFontsTakePriority, rs));
       }
     });
   };
@@ -398,7 +399,7 @@ function Control(): any {
         {isText && fonts.length ? (
           <Flex gap={2} flexWrap="wrap">
             {fonts
-              .filter((font) => font.length < 15)
+              // .filter((font) => font.length < 15)
               .slice(0, 10)
               .map((font) => (
                 <Button

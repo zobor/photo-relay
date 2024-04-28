@@ -118,6 +118,7 @@ class ApiService {
   removeBackgroundImage = () => {
     const { canvas } = this;
     canvas.backgroundImage = undefined;
+    canvas.backgroundColor = undefined;
     canvas.renderAll();
   };
 

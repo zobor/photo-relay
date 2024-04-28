@@ -1,5 +1,4 @@
 .cropper-box-wrap {
-    right: 320px;
 
     .cropper-box {
         max-width: 100%;
@@ -10,26 +9,43 @@
 }
 
 
-.cropper-page .control {
-    bottom: 0;
+.cropper-page {
+  .control {
     position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 320px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #f54990;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px, rgba(245, 73, 144, 0.5) 5px 10px 15px;
     justify-content: center;
-    z-index: 999;
+    z-index: 9999;
     background-clip: unset;
     background-image: none;
     color: var(--bp--preset-navs-text-color);
     -webkit-text-fill-color: var(--bp--preset-navs-text-color);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
     color: #fff;
-    padding: 5px 0;
+    padding: 0 20px;
+    border-radius: 10px;
+  }
+  .stat {
+    width: 100px;
+    border-right: 1px #fff dashed;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .poster {
+    background-color: rgb(241, 196, 15);
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #000;
+    cursor: pointer;
+  }
 }

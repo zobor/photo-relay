@@ -1,3 +1,4 @@
+@import '../../style.scss';
 $boxShadow: 0 1px 2px 0 rgba(0,0,0,.06), 0 6px 12px 0 rgba(0,0,0,.08);
 $asideWidth: 250px;
 
@@ -14,6 +15,7 @@ $asideWidth: 250px;
     background-color: #fff;
     transition: all .6s ease-in-out;
     overflow: hidden;
+    @include plaid-background();
   }
 
   .leftPanel {

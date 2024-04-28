@@ -6,6 +6,7 @@ import { dataURLtoFile, downloadFile } from '../../common/file';
 import { getRandString } from '../../common/math';
 import './index.scss';
 import usePhotoStore from '@/store/photo';
+import Icon from '../../components/Icon';
 
 const { innerWidth: maxWidth, innerHeight: maxHeight } = window;
 
@@ -36,6 +37,10 @@ export default function CropperPic() {
     const str = cropper.getCroppedCanvas().toDataURL();
     updateImage(selected, { url: str });
     updateStep(2);
+  };
+  const onZoom = (type: '+' | '-') => {
+    const cropper: any = cropperRef.current?.cropper;
+    cropper.zoom(type === '+' ? 0.02 : -0.02);
   };
 
   useEffect(() => {
@@ -70,18 +75,25 @@ export default function CropperPic() {
         />
       </div>
       <div className="control">
-        <div className="button-2">
-          width: {stat.width} height: {stat.height}
+        <div className="stat">
+          <div>width: {stat.width}</div>
+          <div>height: {stat.height}</div>
         </div>
-        <button className="button-17" onClick={() => presetBox({ width: 800, height: 520 })}>
-          800 x 520
-        </button>
-        <button className="button-17" onClick={onExport}>
-          Download
-        </button>
-        <button className="button-17" onClick={onSave}>
-          Save
-        </button>
+        <div className="poster" onClick={() => presetBox({ width: 800, height: 520 })} title="set rect: 800 x 520">
+          POSTER
+        </div>
+        <div onClick={() => onZoom('+')} title="Zoom +">
+          <Icon type="add" fill="#fff" />
+        </div>
+        <div onClick={() => onZoom('-')} title="Zoom -">
+          <Icon type="reduce" fill="#fff" />
+        </div>
+        <div onClick={onExport} title="Download">
+          <Icon type="download" fill="#fff" />
+        </div>
+        <div onClick={onSave} title="Save">
+          <Icon type="save" fill="#fff" />
+        </div>
       </div>
     </div>
   );

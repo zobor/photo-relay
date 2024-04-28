@@ -88,30 +88,33 @@ export default function Artboard() {
   useHotKey({
     keyDownCallback: (e: React.KeyboardEvent) => {
       // when press space, you can drag artboard to any postion
+      const isText = api.getSelectedType() === 'i-text';
+      const isImage = api.getSelectedType() === 'image';
+      const isEditing = api.getSelected()?.isEditing;
       switch (e.keyCode) {
         case 32:
-          if (api.getSelectedType() !== 'i-text') {
+          if (!isText) {
             e.preventDefault();
           }
           update({ dragDisabled: false });
           break;
         case 8:
-          if (api.getSelectedType() !== 'i-text') {
+          if (!isText || !isEditing) {
             api.removeSelected();
           }
           break;
         case 88:
-          if (api.getSelectedType() === 'image') {
+          if (isImage || !isEditing) {
             api.setLayout('x-center');
             break;
           }
         case 89:
-          if (api.getSelectedType() === 'image') {
+          if (isImage || !isEditing) {
             api.setLayout('y-center');
             break;
           }
         case 67:
-          if (api.getSelectedType() === 'image') {
+          if (isImage || !isEditing) {
             api.setLayout('center');
             break;
           }

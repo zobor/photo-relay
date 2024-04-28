@@ -30,13 +30,16 @@ export default function CenterControl() {
     addOneImage(str);
     updateStep(2);
   };
-  const zoomIn = () => update({ scale: scale + 5 });
-  const zoomOut = () => update({ scale: scale - 5 });
+  const zoomIn = () => updateScale(scale + 5);
+  const zoomOut = () => updateScale(scale - 5);
   const updateScale = (scale: number) => {
     update({ scale });
     Promise.resolve().then(() => {
       moveCenter();
     });
+    // setTimeout(() => {
+    //   moveCenter();
+    // }, 1000);
   };
 
   useEffect(() => {

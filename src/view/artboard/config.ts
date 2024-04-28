@@ -76,4 +76,16 @@ export default {
     ['6274E7', '8752A3'],
     ['00bf72', 'a8eb12'],
   ],
+  someFontsTakePriority: [
+    'Brush Script MT',
+    'Arial Black',
+    'Arial Rounded MT Bold',
+    'Cascadia Code PL',
+    'Wawati SC',
+    'Herculanum',
+    'PilGi',
+    'LingWai SC',
+    'Luminari',
+    'Baoli TC',
+  ],
 };

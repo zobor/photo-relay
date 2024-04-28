@@ -1,0 +1,25 @@
+$plaidColorValue: 0.06;
+$plaidBoxSize: 20px;
+$plaidBoxHalfSize: calc($plaidBoxSize/2);
+
+body {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 隐藏滚动条 */
+.rc-scrollbars-thumb {
+  display: none !important;
+}
+
+@mixin plaid-background {
+  background-image:
+    linear-gradient(45deg, rgba(0, 0, 0, $plaidColorValue) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, $plaidColorValue) 75%),
+    linear-gradient(45deg, rgba(0, 0, 0, $plaidColorValue) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, $plaidColorValue) 75%);
+  background-size: $plaidBoxSize $plaidBoxSize;
+  background-position: 0 0, $plaidBoxHalfSize $plaidBoxHalfSize;
+  background-repeat: repeat;
+}
