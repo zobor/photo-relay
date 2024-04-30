@@ -63,7 +63,7 @@ export default function ArtboardSize() {
       <Text fontSize="l" as="b">
         Artboard Rect
       </Text>
-      <InputGroup>
+      <InputGroup size={'sm'}>
         <InputLeftAddon children="width" />
         <NumberInput value={width} onChange={(v) => changeRect({ width: +v, height })}>
           <NumberInputField borderLeftRadius={0} />
@@ -73,7 +73,7 @@ export default function ArtboardSize() {
           </NumberInputStepper>
         </NumberInput>
       </InputGroup>
-      <InputGroup>
+      <InputGroup size={'sm'}>
         <InputLeftAddon children="height" />
         <NumberInput value={height} onChange={(v) => changeRect({ width, height: +v })}>
           <NumberInputField borderLeftRadius={0} />
@@ -85,10 +85,10 @@ export default function ArtboardSize() {
       </InputGroup>
 
       <Text fontSize="l" as="b">
-        Export Size
+        Export Size(DPR: {dpr})
       </Text>
 
-      <InputGroup>
+      <InputGroup size={'sm'}>
         <InputLeftAddon children="width" />
         <NumberInput
           value={sizeTransform(width, SizeTransformType.ARTBOARD_TO_EXPORT)}
@@ -107,7 +107,7 @@ export default function ArtboardSize() {
         </NumberInput>
       </InputGroup>
 
-      <InputGroup>
+      <InputGroup size={'sm'}>
         <InputLeftAddon children="height" />
         <NumberInput
           value={sizeTransform(height, SizeTransformType.ARTBOARD_TO_EXPORT)}
@@ -124,10 +124,6 @@ export default function ArtboardSize() {
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
-      </InputGroup>
-      <InputGroup>
-        <InputLeftAddon children="DPR" />
-        <Input value={dpr} type="number" placeholder="dpr" disabled />
       </InputGroup>
 
       <Flex gap={1}>
@@ -146,7 +142,7 @@ export default function ArtboardSize() {
       <Text fontSize="l" as="b">
         Background Color
       </Text>
-      <Flex gap={2}>
+      <Flex gap={2} flexWrap={'wrap'}>
         <input
           defaultValue="#FFFFFF"
           type="color"
@@ -182,6 +178,78 @@ export default function ArtboardSize() {
           style={{ width: 24, backgroundColor: '#333333' }}
           className="artboardPresetColors"
           onClick={() => onChangeColor('#333333')}
+        ></div>
+
+        <div
+          style={{ width: 24, backgroundColor: '#00ff87' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#00ff87')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#ff1b6b' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#ff1b6b')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#40c9ff' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#40c9ff')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#ff930f' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#ff930f')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#696eff' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#696eff')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#ff5858' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#ff5858')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#b84fce' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#b84fce')}
+        ></div>
+
+        <div
+          style={{ width: 24, backgroundColor: '#6f7bf7' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#6f7bf7')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#ff51eb' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#ff51eb')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#f3696e' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#f3696e')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#93cbf1' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#93cbf1')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#f7c0ec' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#f7c0ec')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#f1e1c2' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#f1e1c2')}
+        ></div>
+        <div
+          style={{ width: 24, backgroundColor: '#8de9d5' }}
+          className="artboardPresetColors"
+          onClick={() => onChangeColor('#8de9d5')}
         ></div>
       </Flex>
       <Text fontSize="l" as="b">
