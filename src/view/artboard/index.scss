@@ -9,6 +9,7 @@ $asideWidth: 250px;
   bottom: 0;
   left: 0;
   background-color: #f1f3f4;
+  background-color: rgb(237, 242, 247);
   overflow: hidden;
 
   .canvas-container {
@@ -16,6 +17,14 @@ $asideWidth: 250px;
     transition: all .6s ease-in-out;
     overflow: hidden;
     @include plaid-background();
+
+    box-shadow:
+      2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+      6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+      12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+      22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+      41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+      100px 100px 80px rgba(0, 0, 0, 0.07);
   }
 
   .leftPanel {
