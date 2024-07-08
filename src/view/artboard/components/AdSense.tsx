@@ -25,7 +25,7 @@ export default function AdSense() {
 
   useEffect(() => {
     if (window.localStorage.getItem('google-adsense') === today) return;
-    if (window.location.hostname !== 'www.duelpeak.com') return;
+    if (window.location.hostname !== 'www.hahahehe.cn') return;
     window.localStorage.setItem('google-adsense', today);
     onOpen();
     initAd();
