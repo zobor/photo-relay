@@ -86,7 +86,7 @@ export default function ModalPhotos() {
               <TabPanels>
                 <TabPanel>
                   <iframe
-                    src="https://www.duelpeak.com/pages/photos"
+                    src="https://www.hahahehe.cn/pages/photos"
                     style={{
                       width: 400,
                       height: 400,
@@ -95,7 +95,7 @@ export default function ModalPhotos() {
                 </TabPanel>
                 <TabPanel>
                   <iframe
-                    src="https://www.duelpeak.com/pages/icons/index.html?tab=2&total=20"
+                    src="https://www.hahahehe.cn/pages/icons/index.html?tab=2&total=20"
                     style={{
                       width: 400,
                       height: 400,

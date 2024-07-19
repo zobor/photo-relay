@@ -91,25 +91,25 @@ export default function ShowMoreShapes() {
 
               <TabPanels>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=1&total=991" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=1&total=991" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=2&total=20" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=2&total=20" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=3&total=164" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=3&total=164" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=4&total=113" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=4&total=113" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=5&total=75" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=5&total=75" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=6&total=100" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=6&total=100" style={iframeStyle} />
                 </TabPanel>
                 <TabPanel>
-                  <iframe src="https://www.duelpeak.com/pages/icons/index.html?tab=7&total=204" style={iframeStyle} />
+                  <iframe src="https://www.hahahehe.cn/pages/icons/index.html?tab=7&total=204" style={iframeStyle} />
                 </TabPanel>
               </TabPanels>
             </Tabs>

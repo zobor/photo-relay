@@ -14,4 +14,4 @@ Icon Resource
 ![](https://img.duelpeak.com/duelpeak/202404/0401cdcbb98bf9930a604bf2f803a91668742eeefe1ac12c02b3ab57bc168c1f.jpg)
 
 ## WebSite
-https://www.duelpeak.com/pages/poster
+https://www.hahahehe.cn/pages/poster

@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </div>
         <footer className="footer">
-          <a href="https://www.duelpeak.com/article/100.html" target="_blank">
+          <a href="/" target="_blank">
             @duelpeak
           </a>
           <UploadImage onChange={onUploadedImages} myRef={input} />
